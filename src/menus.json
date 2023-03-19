@@ -1,0 +1,20 @@
+[
+    { "id": "Main",
+        "Style": {
+            "Color": "#c1c1c1ff",
+            "SelectColor": "#f1f1f1ff",
+            "SelectableColor": "#ccccccff"
+        },
+        "Options": [
+            { "text": "Start", "onSelect": "menu_GameSetup", "width": "90%" },
+            { "text": "Settings", "onSelect": "menu_Settings", "width": "90%" },
+            { "text": "Credits", "onSelect": "menu_Credits", "width": "90%" }
+        ]
+    },
+    { "id": "Settings",
+        "onLoad": "callback_StartSettings",
+        "Options": [
+            { "text": "Input Type", "width": "90%" }
+        ]
+    }
+]

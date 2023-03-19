@@ -1,0 +1,130 @@
+{
+    "floor": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 500,
+            "frames": [
+                { "x": 0, "y": 0, "w": 10, "h": 10 }
+            ]}
+    },
+    "floor_dirt": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 500,
+            "frames": [
+                { "x": 10, "y": 30, "w": 10, "h": 10 }
+            ]}
+    },
+    "floor_firepit": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 500,
+            "frames": [
+                { "x": 190, "y": 10, "w": 10, "h": 10 }
+            ]}
+    },
+    "floor_redbrick": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 500,
+            "frames": [
+                { "x": 130, "y": 310, "w": 10, "h": 10 }
+            ]}
+    },
+    "floor_skullandbones": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 500,
+            "frames": [
+                { "x": 20, "y": 30, "w": 10, "h": 10 }
+            ]}
+    },
+
+    "selector": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "selector", "frameDelay": 500,
+            "frames": [
+                { "x": 0, "y": 0, "w": 10, "h": 10 },
+                { "x": 10, "y": 0, "w": 10, "h": 10 },
+                { "x": 20, "y": 0, "w": 10, "h": 10 },
+                { "x": 30, "y": 0, "w": 10, "h": 10 },
+                { "x": 40, "y": 0, "w": 10, "h": 10 }
+            ]}
+    },
+    "areaselect": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "areaselect", "frameDelay": 1000,
+            "frames": [
+                { "x": 0, "y": 0, "w": 10, "h": 10 },
+                { "x": 10, "y": 0, "w": 10, "h": 10 }
+            ]}
+    },
+    "actorselect": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 1000,
+            "frames": [
+                { "x": 170, "y": 224, "w": 10, "h": 10 },
+                { "x": 180, "y": 224, "w": 10, "h": 10 }
+            ]}
+    },
+
+    "soulFlameRed": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 100,
+            "frames": [
+                { "x": 190, "y": 170, "w": 10, "h": 10 },
+                { "x": 200, "y": 170, "w": 10, "h": 10 }
+            ]}
+    },
+    "sacredFlameRed": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 100,
+            "frames": [
+                { "x": 170, "y": 170, "w": 10, "h": 10 },
+                { "x": 180, "y": 170, "w": 10, "h": 10 }
+            ]}
+    },
+    "soulFlameBlue": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 100,
+            "frames": [
+                { "x": 230, "y": 170, "w": 10, "h": 10 },
+                { "x": 240, "y": 170, "w": 10, "h": 10 }
+            ]}
+    },
+    "sacredFlameBlue": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 100,
+            "frames": [
+                { "x": 210, "y": 170, "w": 10, "h": 10 },
+                { "x": 220, "y": 170, "w": 10, "h": 10 }
+            ]}
+    },
+    "soulFlameBlack": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 100,
+            "frames": [
+                { "x": 230, "y": 180, "w": 10, "h": 10 },
+                { "x": 240, "y": 180, "w": 10, "h": 10 }
+            ]}
+    },
+    "sacredFlameBlack": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 100,
+            "frames": [
+                { "x": 210, "y": 180, "w": 10, "h": 10 },
+                { "x": 220, "y": 180, "w": 10, "h": 10 }
+            ]}
+    },
+    "soulFlameWhite": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 100,
+            "frames": [
+                { "x": 190, "y": 180, "w": 10, "h": 10 },
+                { "x": 200, "y": 180, "w": 10, "h": 10 }
+            ]}
+    },
+    "sacredFlameWhite": {
+        "default": "idle",
+        "idle": { "repeat": true, "imageName": "tileset", "frameDelay": 100,
+            "frames": [
+                { "x": 170, "y": 180, "w": 10, "h": 10 },
+                { "x": 180, "y": 180, "w": 10, "h": 10 }
+            ]}
+    }
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depths of Space: Guerilla Tactics</title>
+    <link rel="stylesheet" href="mainstyle.css" />
+
+    <style>
+        canvas {
+            height: 100%;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+            background-color: black;
+        }
+
+        body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body onload="tactics.StartMainMenu()">
+    <canvas id="maincanvas" width="240" height="160"></canvas>
+    <script src="./bfontjs.js"></script>
+    <script src="./bfont-imui.js"></script>
+    <script src="./rot.js"></script>
+    <script src="./fonts/eighties.js"></script>
+    <script src="./fonts/nightmare.js"></script>
+    <script src="./gamecontroller.js"></script>
+    <script src="./tactics.js"></script>
+</body>
+
+</html>

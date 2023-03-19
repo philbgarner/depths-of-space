@@ -1,0 +1,11 @@
+[
+    { "name": "Overseer", "Cost": 4, "eqab": 6, "gunnerySkill": 5, "meleeSkill": 5, "speed": 4, "hp": 22 },
+    { "name": "Trooper", "Cost": 1, "eqab": 4, "gunnerySkill": 5, "meleeSkill": 6, "speed": 4, "hp": 16 },
+    { "name": "Artillerist", "Cost": 3, "eqab": 5, "gunnerySkill": 4, "meleeSkill": 7, "speed": 3, "hp": 18 },
+    { "name": "Recon", "Cost": 2, "eqab": 5, "gunnerySkill": 8, "meleeSkill": 4, "speed": 6, "hp": 16 },
+    { "name": "Technician", "Cost": 2, "eqab": 7, "gunnerySkill": 7, "meleeSkill": 8, "speed": 3, "hp": 14 },
+    { "name": "Medic", "Cost": 4, "eqab": 7, "gunnerySkill": 6, "meleeSkill": 7, "speed": 4, "hp": 20 },
+    { "name": "Herald", "Cost": 3, "eqab": 8, "gunnerySkill": 8, "meleeSkill": 6, "speed": 4, "hp": 14 },
+    { "name": "Crusader", "Cost": 5, "eqab": 7, "gunnerySkill": 6, "meleeSkill": 5, "speed": 5, "hp": 25 },
+    { "name": "Bastion", "Cost": 3, "eqab": 5, "gunnerySkill": 6, "meleeSkill": 4, "speed": 3, "hp": 28 }
+]

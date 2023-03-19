@@ -1,0 +1,21 @@
+{
+  "keyboard": {
+    "moveUp": "ArrowUp",
+    "moveDown": "ArrowDown",
+    "moveLeft": "ArrowLeft",
+    "moveRight": "ArrowRight",
+    "attack": " ",
+    "select": "Shift",
+    "cancel": "Escape"
+  },
+
+  "gamepad": {
+    "moveUp": "button12",
+    "moveDown": "button13",
+    "moveLeft": "button14",
+    "moveRight": "button15",
+    "attack": "button0",
+    "select": "button7",
+    "cancel": "button1"
+  }
+}
