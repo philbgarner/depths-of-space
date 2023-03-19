@@ -4,7 +4,7 @@ import music from './music.js'
 import sprites from './sprites.js'
 import { setContext, loadAllImages } from './images.js'
 import { drawFrame as drawMain } from './mainScene.js'
-import { drawFrame as drawMainMenu, handleEvent, SetMenu } from './menuScene.js'
+import { drawFrame as drawMainMenu, StartMenu } from './menuScene.js'
 import { set, setDictionary } from './grammar.js'
 import input from './input.js'
 
@@ -53,31 +53,21 @@ async function StartMainMenu() {
         canvas.style.width = window.innerHeight * ratio + 'px'
       })
 
-    SetMenu()
-
     setTargetFrameRate(60)
     setContext(canvas.getContext('2d'))
 
-    handleEvent()
+    StartMenu()
 
     window.requestAnimationFrame(requestAnimationFrame)
 }
 
-async function Start(melee, ranged, area) {
+async function Start() {
 
     input.unlisten()
-
-    setDictionary(bestiary.dictionary)
-    LoadCombatBonusTable()
-
-    set('dirt_floors', ['floor', 'floor_dirt'])
-    set('grimoire', grimoire)
-
-    let digger = await Digger(30, 30)
-    
-    Init(CreatePlayer('@', digger.Floors()))
-    Player().slots = [melee, ranged, area]
-    AddTemples(3)
+   
+    // Init(CreatePlayer('@', digger.Floors()))
+    // Player().slots = [melee, ranged, area]
+    // AddTemples(3)
     currentScene = 'main'
 }
 

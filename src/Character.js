@@ -71,7 +71,7 @@ class Character {
     }
 
     Cost() {
-        return this.data.Cost + this.EffectModifier('Cost')
+        return this.data.Cost + this.EffectModifier('cost')
     }
 
     EquipmentAndAbilities() {
