@@ -11,6 +11,18 @@
             { "text": "Credits", "onSelect": "menu_Credits", "width": "90%" }
         ]
     },
+    { "id": "GameSetup",
+        "Style": {
+            "Color": "#c1c1c1ff",
+            "SelectColor": "#f1f1f1ff",
+            "SelectableColor": "#ccccccff"
+        },
+        "Options": [
+            { "text": "Stars: {0}", "onRender": "callback_OnRenderStars", "width": "90%" },
+            { "text": "- Star", "onSelect": "callback_StarDown", "width": "90%" },
+            { "text": "+ Star", "onSelect": "callback_StarUp", "width": "90%" }
+        ]
+    },
     { "id": "Settings",
         "onLoad": "callback_StartSettings",
         "Options": [
