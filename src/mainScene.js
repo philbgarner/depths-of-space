@@ -10,7 +10,7 @@ function drawFrame(delta) {
     if (!ctx) {
         ctx = getContext()
     }
-    ctx.clearRect(0, 0, 240, 160)
+    ctx.clearRect(0, 0, 320, 200)
 
     /*ctx.save()
     ctx.translate(120 - Player().x * TileSizes().x, 80 - Player().y * TileSizes().y)

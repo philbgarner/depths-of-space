@@ -6,8 +6,9 @@ class Character {
     constructor(name) {
         // data property holds base class data from json
         try {
-            this.data = characters.filter(f.name === name)[0]
+            this.data = characters.filter(f => f.name === name)[0]
             this.data.maxHp = this.data.hp
+            this.name = this.data.name
         } catch {
             this.data = {}
             console.error(`Could not locate template for ${name}.`)

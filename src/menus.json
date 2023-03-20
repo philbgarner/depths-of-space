@@ -13,14 +13,34 @@
     },
     { "id": "GameSetup",
         "Style": {
-            "Color": "#c1c1c1ff",
+            "Color": "#a0a0a0ff",
             "SelectColor": "#f1f1f1ff",
             "SelectableColor": "#ccccccff"
         },
         "Options": [
+            { "text": "Hire Squad ({0} hired)", "onRender": "callback_OnRenderHireSquad", "width": "90%" },
             { "text": "Stars: {0}", "onRender": "callback_OnRenderStars", "width": "90%" },
-            { "text": "- Star", "onSelect": "callback_StarDown", "width": "90%" },
-            { "text": "+ Star", "onSelect": "callback_StarUp", "width": "90%" }
+            { "text": "Overseer (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
+            { "text": "Trooper (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
+            { "text": "Artillerist (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
+            { "text": "Recon (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
+            { "text": "Technician (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
+            { "text": "Medic (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
+            { "text": "Herald (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
+            { "text": "Crusader (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
+            { "text": "Bastion (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
+            { "text": "Next", "onSelect": "callback_SetupEquipment", "width": "90%" }
+        ]
+    },
+    { "id": "SetupEquipment",
+        "Style": {
+            "Color": "#a0a0a0ff",
+            "SelectColor": "#f1f1f1ff",
+            "SelectableColor": "#ccccccff"
+        },
+        "Options": [
+            { "text": "Squad Equipment", "width": "90%" },
+            { "text": "Next", "onSelect": "menu_SetupEquipment", "width": "90%" }
         ]
     },
     { "id": "Settings",
