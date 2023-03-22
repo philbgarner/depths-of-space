@@ -98,7 +98,7 @@
 		"characters": ["Trooper", "Artillerist", "Recon"],
 		"effects": []
 	},
-    { "name": "Force Grenade (TODO: Distance based damage)",
+    { "name": "Force Grenade",
 		"attacks": 1,
 		"damage": 8,
 		"range": 12,

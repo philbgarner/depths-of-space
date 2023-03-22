@@ -55,7 +55,6 @@ function listenerKeyUp(e) {
   if (!listening) {
     return
   }
-  console.log(e)
   let inputs = Object.keys(maps.keyboard)
   for (let i in inputs) {
     if (e.key === maps.keyboard[inputs[i]]) {

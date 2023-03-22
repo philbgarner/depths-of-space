@@ -29,7 +29,7 @@
             { "text": "Herald (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
             { "text": "Crusader (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
             { "text": "Bastion (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
-            { "text": "Next", "onSelect": "callback_SetupEquipment", "width": "90%" }
+            { "text": "Next", "onSelect": "callback_SetupEquipment", "width": "90%", "column": 0 }
         ]
     },
     { "id": "SetupEquipment",
@@ -38,9 +38,10 @@
             "SelectColor": "#f1f1f1ff",
             "SelectableColor": "#ccccccff"
         },
+        "Columns": 2,
         "Options": [
-            { "text": "Squad Equipment", "width": "90%" },
-            { "text": "Next", "onSelect": "menu_SetupEquipment", "width": "90%" }
+            { "text": "Squad Equipment", "width": 160, "column": 0 },
+            { "text": "Next", "onSelect": "menu_SetupEquipment", "width": 160, "column": 0 }
         ]
     },
     { "id": "Settings",

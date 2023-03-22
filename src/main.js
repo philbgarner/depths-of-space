@@ -15,6 +15,8 @@ var targetDelta = 16 // Roughly 60fps by default
 
 var currentScene = 'mainMenu'
 
+var pointer = { x: 0, y: 0 }
+
 function setTargetFrameRate(target) {
     targetDelta = parseInt(1000 / target) // Number of ms divided by target fps
 }
@@ -52,6 +54,16 @@ async function StartMainMenu() {
         canvas.style.height = window.innerHeight + 'px'
         canvas.style.width = window.innerHeight * ratio + 'px'
       })
+        
+    canvas.addEventListener('mousemove', (e) => {
+        pointer.x = parseInt((e.clientX - canvas.offsetLeft) * (canvas.width / parseInt(canvas.style.width))) - 2
+        pointer.y = parseInt((e.clientY - canvas.offsetTop) * (canvas.height / parseInt(canvas.style.height)))
+    })
+
+    canvas.addEventListener('contextmenu', (e) => {
+        e.preventDefault()
+        return false
+    })     
 
     setTargetFrameRate(60)
     setContext(canvas.getContext('2d'))
@@ -71,4 +83,4 @@ async function Start() {
     currentScene = 'main'
 }
 
-export { Start, StartMainMenu }
+export { Start, StartMainMenu, pointer }

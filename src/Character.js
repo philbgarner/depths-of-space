@@ -9,6 +9,7 @@ class Character {
             this.data = characters.filter(f => f.name === name)[0]
             this.data.maxHp = this.data.hp
             this.name = this.data.name
+            this.equipment = []
         } catch {
             this.data = {}
             console.error(`Could not locate template for ${name}.`)
