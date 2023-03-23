@@ -59,7 +59,6 @@ var menuMethods = {
         let menu = menus.filter(f => f.id === 'SetupEquipment')[0]
         let nextIndex = menu.Options.findIndex(f => f.text === 'Next')
         menu.Options = [
-            menu.Options[0],
             ...squad.map((m, i) => {
             return {
                 text: `${i + 1}. ${m.name}`,
@@ -177,7 +176,7 @@ function drawUI(delta) {
             //ui.Element({ id: 'imgGamename', type: 'Image', x: 10, y: 10, image: getImage('title') })
             let menu = GetMenu(currentMenuId)
             let menuItems = menu.Options.sort((a, b) => b.column !== undefined ? b.column : 0 - a.column !== undefined ? a.column : 0)
-            imu.RemoveElements()
+            //imu.RemoveElements()
             let dy = menuDy + 30
             for (let i in menuItems) {
                 let item = menuItems[i].text
@@ -188,29 +187,40 @@ function drawUI(delta) {
                     txt = OnRender(txt, menuItem.onRender)
                 }
                 let el = ui.Element({ id: 'lblMenu' + currentMenuId + item + i, text: txt, rect: { x: menuDx, y: dy, w: 64, h: 8 }, color: colr, highlight: colr, bgcolor: '#cccccc00' })
+
+                if (el.Hover()) {
+                    if (menuItem.onSelect) {
+                        currentMenuItem = item
+                    }
+                }
                 if (el.Clicked()) {
                     if (menuItem.onSelect) {
                         currentMenuItem = txt
                         Action(menuItem.onSelect)(menuItem.text)
                     }
-                } else if (el.Hover()) {
-                    if (menuItem.onSelect) {
-                        currentMenuItem = item
-                    }
                 }
                 dy += 12
             }
-
+            if (currentMenuId === 'SetupEquipment') {
+                let elEquip = ui.Element({ id: 'lblEquipMenu', text: 'Squad Equipment', rect: { x: menuDx, y: menuDy + 15, w: 128, h: 8 }, color: menu.Style.Color, highlight: menu.Style.Color, bgcolor: '#cccccc00' })
+            }
             if (currentCharacterEquip && currentMenuId === 'SetupEquipment') {
                 let tooltip = ''
 
-                dy = menuDy + 30
+                dy = menuDy + 42
                 let colDx = 80
                 let charName = currentCharacterEquip.split('.')[1].trim()
+                let charIndex = parseInt(currentCharacterEquip.split('.')) - 1
                 let equiplist = equipment.filter(f => f.characters.includes(charName))
                 for (let e in equiplist) {
                     let equip = equiplist[e]
-                    let el = ui.Element({ id: 'lblEquip' + currentMenuId + equip.name + e, text: equip.name, rect: { x: colDx, y: dy, w: 128, h: 8 }, color: menu.Style.SelectableColor, highlight: menu.Style.SelectColor, bgcolor: '#cccccc00' })
+                    let equipped = squad[charIndex].equipment.filter(f => equip.name === f.name)
+                    let colr = menu.Style.SelectableColor
+                    if (equipped.length > 0) {
+                        colr = menu.Style.Disabled
+                    }
+
+                    let el = ui.Element({ id: 'lblEquip' + currentMenuId + equip.name + e, text: equip.name, rect: { x: colDx, y: dy, w: 128, h: 8 }, color: colr, highlight: colr, bgcolor: '#cccccc00' })
                     
                     if (el.Hover()) {
                         let attr = [`Attacks: ${equip.attacks}`, `Damage: ${equip.damage}`, `Range: ${equip.range}`, `Cost: ${equip.cost}`]
@@ -219,10 +229,17 @@ function drawUI(delta) {
                         }
                         tooltip = attr.join('\n')
                     }
-                    
+                    if (el.Clicked()) {
+                        if (equipped.length > 0) {
+                            squad[charIndex].equipment = squad[charIndex].equipment.filter(f => f.name !== equip.name)
+                        } else {
+                            squad[charIndex].equipment.push(equip)
+                        }
+                    }
+                        
                     dy += 12
                     if (dy > 180) {
-                        dy = menuDy + 30
+                        dy = menuDy + 42
                         colDx += 90
                     }
                 }

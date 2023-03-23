@@ -3,7 +3,8 @@
         "Style": {
             "Color": "#c1c1c1ff",
             "SelectColor": "#f1f1f1ff",
-            "SelectableColor": "#ccccccff"
+            "SelectableColor": "#ccccccff",
+            "Disabled": "#0a0a0aff"
         },
         "Options": [
             { "text": "Start", "onSelect": "menu_GameSetup", "width": "90%" },
@@ -15,7 +16,8 @@
         "Style": {
             "Color": "#a0a0a0ff",
             "SelectColor": "#f1f1f1ff",
-            "SelectableColor": "#ccccccff"
+            "SelectableColor": "#ccccccff",
+            "Disabled": "#0a0a0aff"
         },
         "Options": [
             { "text": "Hire Squad ({0} hired)", "onRender": "callback_OnRenderHireSquad", "width": "90%" },
@@ -36,11 +38,11 @@
         "Style": {
             "Color": "#a0a0a0ff",
             "SelectColor": "#f1f1f1ff",
-            "SelectableColor": "#ccccccff"
+            "SelectableColor": "#ccccccff",
+            "Disabled": "#0a0a0aff"
         },
         "Columns": 2,
         "Options": [
-            { "text": "Squad Equipment", "width": 160, "column": 0 },
             { "text": "Next", "onSelect": "menu_SetupEquipment", "width": 160, "column": 0 }
         ]
     },
