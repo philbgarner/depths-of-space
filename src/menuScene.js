@@ -206,11 +206,12 @@ function drawUI(delta) {
             }
             if (currentCharacterEquip && currentMenuId === 'SetupEquipment') {
                 let tooltip = ''
-
                 dy = menuDy + 42
                 let colDx = 80
                 let charName = currentCharacterEquip.split('.')[1].trim()
                 let charIndex = parseInt(currentCharacterEquip.split('.')) - 1
+                let eqabPoints = squad[charIndex].EquipmentAndAbilities()
+                let elSelEquip = ui.Element({ id: 'lblSelEquip', text: `${charName}: Equip & Ability Points: ${eqabPoints}`, rect: { x: colDx, y: menuDy + 30, w: 128, h: 8 }, color: menu.Style.Color, highlight: menu.Style.Color, bgcolor: '#cccccc00' })
                 let equiplist = equipment.filter(f => f.characters.includes(charName))
                 for (let e in equiplist) {
                     let equip = equiplist[e]
@@ -232,8 +233,10 @@ function drawUI(delta) {
                     if (el.Clicked()) {
                         if (equipped.length > 0) {
                             squad[charIndex].equipment = squad[charIndex].equipment.filter(f => f.name !== equip.name)
+                            squad[charIndex].EquipmentAndAbilities(eqabPoints + equip.cost)
                         } else {
                             squad[charIndex].equipment.push(equip)
+                            squad[charIndex].EquipmentAndAbilities(eqabPoints - equip.cost)
                         }
                     }
                         
