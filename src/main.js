@@ -76,11 +76,13 @@ async function StartMainMenu() {
 async function Start() {
 
     input.unlisten()
-   
-    // Init(CreatePlayer('@', digger.Floors()))
-    // Player().slots = [melee, ranged, area]
-    // AddTemples(3)
+    let canvas = document.getElementById('maincanvas')
     currentScene = 'main'
+
+    setTargetFrameRate(60)
+    setContext(canvas.getContext('2d'))
+
+    window.requestAnimationFrame(requestAnimationFrame)
 }
 
 export { Start, StartMainMenu, pointer }

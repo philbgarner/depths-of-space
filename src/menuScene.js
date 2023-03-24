@@ -48,13 +48,16 @@ var menuMethods = {
         }
     },
 
+    callback_StartGame: () => {
+        console.log('callback_StartGame')
+        Start()
+    },
+
     callback_SelectCharacterEquip: (text) => {
         currentCharacterEquip = text
-        console.log('character equip', text)
     },
 
     callback_SetupEquipment: (text) => {
-        console.log('setup equp', squad)
         ChangeMenu('SetupEquipment')
         let menu = menus.filter(f => f.id === 'SetupEquipment')[0]
         let nextIndex = menu.Options.findIndex(f => f.text === 'Next')
@@ -235,8 +238,10 @@ function drawUI(delta) {
                             squad[charIndex].equipment = squad[charIndex].equipment.filter(f => f.name !== equip.name)
                             squad[charIndex].EquipmentAndAbilities(eqabPoints + equip.cost)
                         } else {
-                            squad[charIndex].equipment.push(equip)
-                            squad[charIndex].EquipmentAndAbilities(eqabPoints - equip.cost)
+                            if (eqabPoints - equip.cost >= 0) {
+                                squad[charIndex].equipment.push(equip)
+                                squad[charIndex].EquipmentAndAbilities(eqabPoints - equip.cost)
+                            }
                         }
                     }
                         
@@ -248,7 +253,8 @@ function drawUI(delta) {
                 }
 
                 if (tooltip) {
-                    let tip = ui.Element({ id: 'lblTooltip', text: tooltip, x: pointer.x, y: pointer.y + 8, color: menu.Style.SelectableColor, highlight: menu.Style.SelectColor, bgcolor: '#000000dd' })
+                    ui.RemoveElement('lblTooltip')
+                    let tip = ui.Element({ id: 'lblTooltip', text: tooltip, x: pointer.x, y: pointer.y + 8, autosize: true, color: menu.Style.SelectableColor, highlight: menu.Style.SelectColor, bgcolor: '#000000dd' })
                 }
             }
         }
