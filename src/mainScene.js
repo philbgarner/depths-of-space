@@ -27,6 +27,10 @@ function drawFrame(delta) {
     drawUI()
 }
 
+function drawMap(delta) {
+    
+}
+
 function drawUI(delta) {
     if (!imu) {
         imu = new imui.ImUI(ctx.canvas)
