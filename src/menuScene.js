@@ -49,7 +49,6 @@ var menuMethods = {
     },
 
     callback_StartGame: () => {
-        console.log('callback_StartGame')
         Start()
     },
 
