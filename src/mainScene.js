@@ -1,4 +1,5 @@
 import { getContext } from "./images.js"
+import { drawMap } from "./map.js"
 
 let imu = null
 
@@ -24,11 +25,9 @@ function drawFrame(delta) {
 
     ctx.restore()*/
 
-    drawUI()
-}
+    drawMap(delta)
 
-function drawMap(delta) {
-    
+    drawUI(delta)
 }
 
 function drawUI(delta) {

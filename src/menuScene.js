@@ -6,6 +6,7 @@ import { buildSprite } from './sprites.js'
 
 import menus from './menus.json'
 import equipment from './equipment.json'
+import { buildMap } from './map.js'
 
 let imu = null
 
@@ -49,6 +50,7 @@ var menuMethods = {
     },
 
     callback_StartGame: () => {
+        buildMap()
         Start()
     },
 
