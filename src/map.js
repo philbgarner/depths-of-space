@@ -6,14 +6,15 @@ var width = 36
 var height = 24
 
 var gridSize = 24
-var gridOpacity = 0.6
+var gridOpacity = 0.3
 
 var startAreaWidth = 10
 var startAreaHeight = 24
 
 var camera = {
-    x: 0,
+    x: 24,
     y: 8.5 * gridSize,
+    w: 320 / gridSize, h: 200 / gridSize,
     targetX: 0,
     targetY: 8.5 * gridSize,
 }
@@ -33,6 +34,8 @@ function drawMap(delta) {
     ctx.save()
 
     ctx.translate(-camera.x, -camera.y)
+
+    drawImage('mars-scape', 0, 0)
 
     let ga = ctx.globalAlpha
     ctx.globalAlpha = gridOpacity
