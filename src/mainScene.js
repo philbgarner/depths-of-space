@@ -14,18 +14,6 @@ function drawFrame(delta) {
     }
     ctx.clearRect(0, 0, 320, 200)
 
-    /*ctx.save()
-    ctx.translate(120 - Player().x * TileSizes().x, 80 - Player().y * TileSizes().y)
-    DrawFOV(Player())
-    Player().draw()
-    let spriteObjs = getSpriteObjects()
-    for (let index in spriteObjs) {
-        spriteObjs[index].update(16)
-        spriteObjs[index].draw()
-    }
-
-    ctx.restore()*/
-
     drawMap(delta)
 
     drawUI(delta)

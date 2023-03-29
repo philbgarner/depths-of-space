@@ -74,7 +74,7 @@ async function StartMainMenu() {
     window.requestAnimationFrame(requestAnimationFrame)
 }
 
-async function Start() {
+async function Start(squad) {
 
     input.unlisten()
     let canvas = document.getElementById('maincanvas')
@@ -82,7 +82,7 @@ async function Start() {
 
     addTeam('Team A', '1d10')
     addTeam('Team B', '1d10')
-    console.log('teams', currentTeam())
+    console.log('teams', currentTeam(), squad)
 
     setTargetFrameRate(60)
     setContext(canvas.getContext('2d'))

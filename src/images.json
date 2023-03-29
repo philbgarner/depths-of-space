@@ -2,5 +2,9 @@
     { "name": "background", "image": null, "filename": "./images/Background-sheet.png" },
     { "name": "grid-white", "image": null, "filename": "./images/GridWhite.png" },
     { "name": "grid-yellow", "image": null, "filename": "./images/GridYellow.png" },
-    { "name": "mars-scape", "image": null, "filename": "./images/Mars-Scape.png"}
+    { "name": "mars-scape", "image": null, "filename": "./images/Mars-Scape.png"},
+    { "name": "player-walk", "image": null, "filename": "./images/anims/PlayerWalk 48x48.png" },
+    { "name": "player-death", "image": null, "filename": "./images/anims/Player Death 64x64.png" },
+    { "name": "player-hurt", "image": null, "filename": "./images/anims/Player Hurt 48x48.png" },
+    { "name": "player-idle", "image": null, "filename": "./images/anims/Character Idle 48x48.png" }
 ]

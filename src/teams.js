@@ -14,6 +14,11 @@ function addTeam(name, turnOrderRollDice) {
     teams.sort((a, b) => b.order - a.order)
 }
 
+function getTeam(name) {
+    let team = teams.filter(f => f.name === name)
+    return team.length > 0 ? team[0] : null
+}
+
 function currentTeam() {
     return teams[teamIndex]
 }
@@ -27,4 +32,4 @@ function nextPhase() {
     phase = phase >= phases.length ? 0 : phase
 }
 
-export { addTeam, currentTeam, currentPhase, nextPhase }
+export { addTeam, currentTeam, currentPhase, nextPhase, getTeam }

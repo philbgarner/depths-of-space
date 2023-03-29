@@ -1,4 +1,6 @@
+import Actor from "./actor.js"
 import { getContext, drawImage } from "./images.js"
+import { getTeam } from "./teams.js"
 
 var map = null
 
@@ -11,12 +13,16 @@ var gridOpacity = 0.3
 var startAreaWidth = 10
 var startAreaHeight = 24
 
+var placingSprite = null
+
+var units = []
+
 var camera = {
     x: 24,
-    y: 8.5 * gridSize,
-    w: 320 / gridSize, h: 200 / gridSize,
+    y: 8.5 * gridDimensions,
+    w: 320 / gridDimensions, h: 200 / gridDimensions,
     targetX: 0,
-    targetY: 8.5 * gridSize,
+    targetY: 8.5 * gridDimensions,
 }
 
 function triangleContains(ax, ay, bx, by, cx, cy, x, y) {
@@ -27,6 +33,18 @@ function triangleContains(ax, ay, bx, by, cx, cy, x, y) {
             det * ((cx - bx) * (y - by) - (cy - by) * (x - bx)) >= 0 &&
             det * ((ax - cx) * (y - cy) - (ay - cy) * (x - cx)) >= 0    
 
+}
+
+function addUnit(teamName, unit) {
+    let actor = new Actor({
+        team: getTeam(teamName),
+        name: unit.name,
+        character: unit,
+        spriteName: 'player',
+        x: 0,
+        y: 0
+    })
+    return actor
 }
 
 function drawMap(delta) {
@@ -41,24 +59,32 @@ function drawMap(delta) {
     ctx.globalAlpha = gridOpacity
     let tiles = map.tiles
     for (let t in tiles) {
-        let x = tiles[t][0] * gridSize
-        let y = tiles[t][1] * gridSize
+        let x = tiles[t][0] * gridDimensions
+        let y = tiles[t][1] * gridDimensions
         drawImage('grid-white', x, y)
     }
 
     for (let t in map.teamA) {
-        let x = map.teamA[t][0] * gridSize
-        let y = map.teamA[t][1] * gridSize
+        let x = map.teamA[t][0] * gridDimensions
+        let y = map.teamA[t][1] * gridDimensions
         drawImage('grid-yellow', x, y)
     }
     for (let t in map.teamB) {
-        let x = map.teamB[t][0] * gridSize
-        let y = map.teamB[t][1] * gridSize
+        let x = map.teamB[t][0] * gridDimensions
+        let y = map.teamB[t][1] * gridDimensions
         drawImage('grid-yellow', x, y)
     }
     ctx.globalAlpha = ga
 
+    if (placingSprite) {
+
+    }
+
     ctx.restore()
+}
+
+function gridDimensions() {
+    return { x: gridDimensions, y: gridDimensions }
 }
 
 function buildMap() {
@@ -85,4 +111,4 @@ function buildMap() {
     return map
 }
 
-export { buildMap, drawMap }
+export { buildMap, drawMap, gridDimensions as gridSize, addUnit }
