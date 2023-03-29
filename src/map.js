@@ -76,7 +76,7 @@ function buildMap() {
         }
     }
     map = {
-        tiles: tiles, teamA: teamATiles, teamB: teamBTiles
+        tiles: tiles, teamA: teamATiles, teamB: teamBTiles, allTiles: tiles
     }
     map.tiles = map.tiles.filter(f => !map.teamA.filter(a => a[0] === f[0] && a[1] === f[1]).length && !map.teamB.filter(b => f[0] === b[0] && f[1] === b[1]).length)
     return map
