@@ -36,7 +36,7 @@ function drawMap(delta) {
 
     let ga = ctx.globalAlpha
     ctx.globalAlpha = gridOpacity
-    let tiles = map.tiles.filter(f => !map.teamA.filter(a => a[0] === f[0] && a[1] === f[1]).length && !map.teamB.filter(b => f[0] === b[0] && f[1] === b[1]).length)
+    let tiles = map.tiles
     for (let t in tiles) {
         let x = tiles[t][0] * gridSize
         let y = tiles[t][1] * gridSize
@@ -75,10 +75,10 @@ function buildMap() {
             }
         }
     }
-    
     map = {
         tiles: tiles, teamA: teamATiles, teamB: teamBTiles
     }
+    map.tiles = map.tiles.filter(f => !map.teamA.filter(a => a[0] === f[0] && a[1] === f[1]).length && !map.teamB.filter(b => f[0] === b[0] && f[1] === b[1]).length)
     return map
 }
 
