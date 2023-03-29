@@ -1,3 +1,5 @@
 [
-    { "name": "background", "image": null, "filename": "./images/Background-sheet.png" }
+    { "name": "background", "image": null, "filename": "./images/Background-sheet.png" },
+    { "name": "grid-white", "image": null, "filename": "./images/GridWhite.png" },
+    { "name": "grid-yellow", "image": null, "filename": "./images/GridYellow.png" }
 ]

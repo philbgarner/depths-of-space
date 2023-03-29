@@ -7,6 +7,7 @@ import { drawFrame as drawMain } from './mainScene.js'
 import { drawFrame as drawMainMenu, StartMenu } from './menuScene.js'
 import { set, setDictionary } from './grammar.js'
 import input from './input.js'
+import { addTeam, currentTeam } from './teams.js'
 
 var dateNow = Date.now()
 var dateThen = Date.now()
@@ -78,6 +79,10 @@ async function Start() {
     input.unlisten()
     let canvas = document.getElementById('maincanvas')
     currentScene = 'main'
+
+    addTeam('Team A', '1d10')
+    addTeam('Team B', '1d10')
+    console.log('teams', currentTeam())
 
     setTargetFrameRate(60)
     setContext(canvas.getContext('2d'))

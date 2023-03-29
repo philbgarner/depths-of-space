@@ -1,17 +1,21 @@
+import { roll } from './grammar.js'
+
 var teams = []
-var currentTeam = 0
+var teamIndex = 0
 var phases = ['positioning', 'movement', 'active', 'siege', 'upkeep']
 var phase = 0
 
-function addTeam(name) {
+function addTeam(name, turnOrderRollDice) {
     teams.push({
         name: name,
-        color: '#ccccccff'
+        color: '#ccccccff',
+        order: roll(turnOrderRollDice)
     })
+    teams.sort((a, b) => b.order - a.order)
 }
 
 function currentTeam() {
-    return teams[currentTeam]
+    return teams[teamIndex]
 }
 
 function currentPhase() {
