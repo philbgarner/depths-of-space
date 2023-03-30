@@ -1,6 +1,7 @@
 import Actor from "./actor.js"
 import { getContext, drawImage } from "./images.js"
 import { getTeam } from "./teams.js"
+import { pointer } from "./main.js"
 
 var map = null
 
@@ -25,6 +26,10 @@ var camera = {
     targetY: 8.5 * gridDimensions,
 }
 
+function setPlacingSprite(sprite) {
+    placingSprite = sprite
+}
+
 function triangleContains(ax, ay, bx, by, cx, cy, x, y) {
 
     let det = (bx - ax) * (cy - ay) - (by - ay) * (cx - ax)
@@ -44,7 +49,17 @@ function addUnit(teamName, unit) {
         x: 0,
         y: 0
     })
+    units.push(actor)
     return actor
+}
+
+function getUnits(teamName) {
+    console.log(teamName, units)
+    if (teamName) {
+        return units.filter(f => f.team.name === teamName)
+    } else {
+        return units
+    }
 }
 
 function drawMap(delta) {
@@ -77,7 +92,10 @@ function drawMap(delta) {
     ctx.globalAlpha = ga
 
     if (placingSprite) {
-
+        console.log('placingSprite', placingSprite)
+        placingSprite.x = pointer.x
+        placingSprite.y = pointer.y
+        placingSprite.draw(delta)
     }
 
     ctx.restore()
@@ -111,4 +129,4 @@ function buildMap() {
     return map
 }
 
-export { buildMap, drawMap, gridDimensions as gridSize, addUnit }
+export { buildMap, drawMap, gridDimensions as gridSize, addUnit, setPlacingSprite, getUnits }

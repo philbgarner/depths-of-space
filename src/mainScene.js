@@ -1,6 +1,7 @@
 import { getContext } from "./images.js"
-import { drawMap } from "./map.js"
+import { drawMap, getUnits, setPlacingSprite } from "./map.js"
 import { currentPhase, currentTeam } from "./teams.js"
+import { pointer } from "./main.js"
 
 let imu = null
 
@@ -19,11 +20,24 @@ function drawFrame(delta) {
     drawUI(delta)
 }
 
+function handleAction() {
+    if (currentPhase() === 'positioning') {
+        let units = getUnits(currentTeam().name)
+        console.log(currentTeam())
+        if (units.length > 0) {
+            setPlacingSprite(units[0].sprite)
+        }
+    }
+}
+
+function StartScene() {
+    handleAction()
+}
+
 function drawUI(delta) {
     if (!imu) {
         imu = new imui.ImUI(ctx.canvas)
         imu.font = font
-
 
         imu.onUpdate = (ui) => {
             let phase = currentPhase().slice(0, 1).toUpperCase() + currentPhase().slice(1)
@@ -35,4 +49,4 @@ function drawUI(delta) {
     imu.Draw()
 }
 
-export { drawFrame }
+export { drawFrame, StartScene }

@@ -6,12 +6,14 @@ var phases = ['positioning', 'movement', 'active', 'siege', 'upkeep']
 var phase = 0
 
 function addTeam(name, turnOrderRollDice) {
-    teams.push({
+    let team = {
         name: name,
         color: '#ccccccff',
         order: roll(turnOrderRollDice)
-    })
+    }
+    teams.push(team)
     teams.sort((a, b) => b.order - a.order)
+    return team
 }
 
 function getTeam(name) {
@@ -32,4 +34,9 @@ function nextPhase() {
     phase = phase >= phases.length ? 0 : phase
 }
 
-export { addTeam, currentTeam, currentPhase, nextPhase, getTeam }
+function nextTeam() {
+    teamIndex++
+    teamIndex = teamIndex >= teams.length ? 0 : teamIndex
+}
+
+export { addTeam, currentTeam, currentPhase, nextPhase, getTeam, nextTeam }

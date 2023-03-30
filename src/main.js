@@ -2,12 +2,14 @@ import images from './images.js'
 import sfx from './sfx.js'
 import music from './music.js'
 import sprites from './sprites.js'
+import Actor from './actor.js'
 import { setContext, loadAllImages } from './images.js'
-import { drawFrame as drawMain } from './mainScene.js'
+import { drawFrame as drawMain, StartScene } from './mainScene.js'
 import { drawFrame as drawMainMenu, StartMenu } from './menuScene.js'
 import { set, setDictionary } from './grammar.js'
 import input from './input.js'
 import { addTeam, currentTeam } from './teams.js'
+import { addUnit } from './map.js'
 
 var dateNow = Date.now()
 var dateThen = Date.now()
@@ -80,12 +82,17 @@ async function Start(squad) {
     let canvas = document.getElementById('maincanvas')
     currentScene = 'main'
 
-    addTeam('Team A', '1d10')
-    addTeam('Team B', '1d10')
-    console.log('teams', currentTeam(), squad)
+    addTeam('Team Alpha', '2d10')
+    addTeam('Team Bravo', '1d1')
+    
+    for (let s in squad) {
+        addUnit('Team Alpha', squad[s])
+    }
 
     setTargetFrameRate(60)
     setContext(canvas.getContext('2d'))
+
+    StartScene()
 
     window.requestAnimationFrame(requestAnimationFrame)
 }
