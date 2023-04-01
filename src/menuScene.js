@@ -76,8 +76,8 @@ var menuMethods = {
     }
 }
 
-let menuDx = 0
-let menuDy = 0
+let menuDx = 39
+let menuDy = 42
 
 function Action(actionId) {
     if (actionId.includes('callback_')) {
@@ -176,13 +176,20 @@ function drawUI(delta) {
     if (!imu) {
         imu = new imui.ImUI(ctx.canvas)
         imu.font = font
-        
+
+        let paramsTealFrame = { innerRect: { x: 6, y: 8, w: 53 , h: 47 }, type: 'ButtonImage', color: '#122020ff', highlight: '#122020ff', bgcolor: '#000000cc', image: getImage('ui-frame-teal'), imageDown: getImage('ui-frame-teal'), imageHover: getImage('ui-frame-teal') }
+        let paramsTealButton = { innerRect: { x: 5, y: 4, w: 9, h: 2 }, type: 'ButtonImage', color: '#122020ff', highlight: '#122020ff', bgcolor: '#000000cc', image: getImage('ui-button-teal'), imageDown: getImage('ui-button-teal-down'), imageHover: getImage('ui-button-teal') }
+
+        // imu.onUpdate = (ui) => {
+        //     ui.Element({ id: 'lblMenu', text: 'Test', rect: { x: 72, y: 74, w: 112, h: 32 }, ...paramsTealButton})
+        // }
         imu.onUpdate = (ui) => {
             //ui.Element({ id: 'imgGamename', type: 'Image', x: 10, y: 10, image: getImage('title') })
+            let frameMenu = ui.Element({ id: 'frameMenu', rect: {x: 38, y: 28, w: 97, h: 96}, ...paramsTealFrame })
             let menu = GetMenu(currentMenuId)
             let menuItems = menu.Options.sort((a, b) => b.column !== undefined ? b.column : 0 - a.column !== undefined ? a.column : 0)
             //imu.RemoveElements()
-            let dy = menuDy + 30
+            let dy = menuDy
             for (let i in menuItems) {
                 let item = menuItems[i].text
                 let menuItem = menuItems[i]
@@ -191,7 +198,8 @@ function drawUI(delta) {
                 if (txt.includes('{') && txt.includes('}') && menuItem.onRender) {
                     txt = OnRender(txt, menuItem.onRender)
                 }
-                let el = ui.Element({ id: 'lblMenu' + currentMenuId + item + i, text: txt, rect: { x: menuDx, y: dy, w: 64, h: 8 }, color: colr, highlight: colr, bgcolor: '#cccccc00' })
+                //let el = ui.Element({ id: 'lblMenu' + currentMenuId + item + i, text: txt, rect: { x: menuDx, y: dy, w: 64, h: 8 }, color: colr, highlight: colr, bgcolor: '#cccccc00' })
+                let el = ui.Element({ id: 'lblMenu' + currentMenuId + item + i, text: txt, rect: {x: menuDx + 5, y: dy, w: 86, h: 19}, ...paramsTealButton })
 
                 if (el.Hover()) {
                     if (menuItem.onSelect) {
@@ -204,7 +212,7 @@ function drawUI(delta) {
                         Action(menuItem.onSelect)(menuItem.text)
                     }
                 }
-                dy += 12
+                dy += 22
             }
             if (currentMenuId === 'SetupEquipment') {
                 let elEquip = ui.Element({ id: 'lblEquipMenu', text: 'Squad Equipment', rect: { x: menuDx, y: menuDy + 15, w: 128, h: 8 }, color: menu.Style.Color, highlight: menu.Style.Color, bgcolor: '#cccccc00' })

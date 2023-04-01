@@ -1,4 +1,4 @@
-import { getContext } from "./images.js"
+import { getContext, getImage } from "./images.js"
 import { drawMap, getUnits, setPlacingSprite } from "./map.js"
 import { currentPhase, currentTeam } from "./teams.js"
 import { pointer } from "./main.js"
