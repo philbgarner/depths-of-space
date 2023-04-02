@@ -10,6 +10,7 @@ import { buildMap } from './map.js'
 import { addTeam } from './teams.js'
 
 import { onUpdate as onGameSetupUpdate } from './menus/gameSetup.js'
+import { onUpdate as onEquipSetupUpdate } from './menus/equipSetup.js'
 
 let imu = null
 
@@ -98,6 +99,8 @@ function ChangeMenu(id) {
 
     if (id === 'GameSetup') {
         imu.onUpdate = onGameSetupUpdate
+    } if (id === 'SetupEquipment') {
+        imu.onUpdate = onEquipSetupUpdate
     }
 }
 
@@ -195,4 +198,4 @@ function drawUI(delta) {
     imu.Draw()
 }
 
-export { drawFrame, StartMenu }
+export { drawFrame, StartMenu, ChangeMenu }

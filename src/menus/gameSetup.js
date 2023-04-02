@@ -2,6 +2,7 @@ import { getImage } from '../images.js'
 import characters from '../characters.json'
 import menus from './menus.json'
 import { Character } from '../character.js'
+import { ChangeMenu } from '../menuScene.js'
 
 var squad = []
 var stars = 16
@@ -68,10 +69,13 @@ function onUpdate(ui) {
     if (btnNext.Hover()) {
         classDescription = 'Accept squad and move\non to outfitting equipment\nand abilities.'
     }
+    if (btnNext.Clicked()) {
+        ChangeMenu('SetupEquipment')
+    }
 
     if (classDescription.length) {
         let lblTooltip = ui.Element({ id: 'lblTooltip', text: classDescription, rect: { x: 8, y: 8, w: 110, h: 100 }, ...paramsLabel}, statsMenu)
     }
 }
 
-export { onUpdate }
+export { onUpdate, squad }
