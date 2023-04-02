@@ -37,7 +37,8 @@ function onUpdate(ui) {
 
     let buttonsMenu = ui.Element({ id: 'frameButtons', rect: {x: 135, y: 156, w: 128, h: 32 }, ...paramsTealFrame })
 
-    let lblStars = ui.Element({ id: 'lblMenuStars', text: `Stars: ${stars}`, rect: { x: 78, y: 8, w: 64, h: 11 }, ...paramsLabel}, frameMenu)
+    let lblStars = ui.Element({ id: 'lblMenuStars', text: `${stars}`, rect: { x: 98, y: 10, w: 64, h: 11 }, ...paramsLabel}, frameMenu)
+    ui.Element({ id: 'imgStars', type: 'Image', x: 108, y: 8, image: getImage('star-icon') }, frameMenu)
     let classDescription = squad.length === 0 ? 'Hire your squad and click next\nto continue.' : `Squad Size: ${squad.length}` + (stars === 0 ? `\nNo stars remaining.\nClick 'Next'.` : '')
     let dy = 19
     for (let o in menu.Options) {

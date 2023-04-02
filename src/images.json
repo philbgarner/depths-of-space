@@ -9,6 +9,8 @@
     { "name": "mars-scape", "image": null, "filename": "./images/Mars-Scape.png"},
     { "name": "mars-lookout", "image": null, "filename": "./images/mars-lookout.png"},
 
+    { "name": "star-icon", "image": null, "filename": "./images/star.png"},
+
     { "name": "ui-frame-teal", "image": null, "filename": "./images/ui-frame-teal.png"},
     { "name": "ui-button-teal", "image": null, "filename": "./images/ui-button-teal.png"},
     { "name": "ui-button-teal-down", "image": null, "filename": "./images/ui-button-teal-down.png"},

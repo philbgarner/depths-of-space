@@ -14,6 +14,11 @@ function onUpdate(ui) {
     let paramsLabel = { type: 'Element', color: '#cacacaff', highlight: '#cacacaff', bgcolor: '#00000000' }
     let frameMenu = ui.Element({ id: 'frameMenu', rect: {x: 5, y: 28, w: 128, h: 160 }, ...paramsTealFrame })
 
+    let eqabRect = { ...frameMenu.rect }
+    eqabRect.x += eqabRect.w + 2
+    console.log(eqabRect)
+    let eqabMenu = ui.Element({ id: 'eqabMenu', rect: eqabRect, ...paramsTealFrame })
+
     let dy = 9
     for (let s in squad) {
         let style = { ...paramsLabel }
