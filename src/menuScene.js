@@ -4,10 +4,12 @@ import { Start, pointer } from './main.js'
 import { Character } from './character.js'
 import { buildSprite } from './sprites.js'
 
-import menus from './menus.json'
+//import menus from './menus.json'
 import equipment from './equipment.json'
 import { buildMap } from './map.js'
 import { addTeam } from './teams.js'
+
+import { onUpdate as onGameSetupUpdate } from './menus/gameSetup.js'
 
 let imu = null
 
@@ -28,53 +30,53 @@ var currentMenuColumn = 0
 
 var currentCharacterEquip = null
 
-var menuMethods = {
-    callback_OnRenderStars: (text, replacements) => {
-        return [stars.toString()]
-    },
-    callback_OnRenderHireSquad: (text, replacements) => {
-        return [squad.length]
-    },
+// var menuMethods = {
+//     callback_OnRenderStars: (text, replacements) => {
+//         return [stars.toString()]
+//     },
+//     callback_OnRenderHireSquad: (text, replacements) => {
+//         return [squad.length]
+//     },
 
-    callback_OnRenderCharacter: (text, replacements) => {
-        let name = text.split(' ')[0].replace('>', '')
-        return [(squad.filter(f => f.name === name).length)]
-    },
+//     callback_OnRenderCharacter: (text, replacements) => {
+//         let name = text.split(' ')[0].replace('>', '')
+//         return [(squad.filter(f => f.name === name).length)]
+//     },
 
-    callback_HireCharacter: (text) => {
-        let name = text.split(' ')[0].replace('>', '')
-        let char = new Character(name)
-        if (stars - char.Cost() >= 0) {
-            squad.push(char)
-            stars -= char.Cost()
-        }
-    },
+//     callback_HireCharacter: (text) => {
+//         let name = text.split(' ')[0].replace('>', '')
+//         let char = new Character(name)
+//         if (stars - char.Cost() >= 0) {
+//             squad.push(char)
+//             stars -= char.Cost()
+//         }
+//     },
 
-    callback_StartGame: () => {
-        buildMap()
-        Start(squad)
-    },
+//     callback_StartGame: () => {
+//         buildMap()
+//         Start(squad)
+//     },
 
-    callback_SelectCharacterEquip: (text) => {
-        currentCharacterEquip = text
-    },
+//     callback_SelectCharacterEquip: (text) => {
+//         currentCharacterEquip = text
+//     },
 
-    callback_SetupEquipment: (text) => {
-        ChangeMenu('SetupEquipment')
-        let menu = menus.filter(f => f.id === 'SetupEquipment')[0]
-        let nextIndex = menu.Options.findIndex(f => f.text === 'Next')
-        menu.Options = [
-            ...squad.map((m, i) => {
-            return {
-                text: `${i + 1}. ${m.name}`,
-                onSelect: 'callback_SelectCharacterEquip',
-                width: 160,
-                column: 0
-            }}),
-            menu.Options[nextIndex]
-        ]
-    }
-}
+//     callback_SetupEquipment: (text) => {
+//         ChangeMenu('SetupEquipment')
+//         let menu = menus.filter(f => f.id === 'SetupEquipment')[0]
+//         let nextIndex = menu.Options.findIndex(f => f.text === 'Next')
+//         menu.Options = [
+//             ...squad.map((m, i) => {
+//             return {
+//                 text: `${i + 1}. ${m.name}`,
+//                 onSelect: 'callback_SelectCharacterEquip',
+//                 width: 160,
+//                 column: 0
+//             }}),
+//             menu.Options[nextIndex]
+//         ]
+//     }
+// }
 
 let menuDx = 39
 let menuDy = 42
@@ -90,28 +92,29 @@ function Action(actionId) {
 }
 
 function ChangeMenu(id) {
-    input.unlisten()
     currentMenuColumn = 0
     currentMenuId = id
-    let menuItems = GetMenuItems(id)
-    input.listen()
-    menuItem = menuItems.filter(f => f.text === currentMenuItem)[0]
-}
+    imu.RemoveElements()
 
-function GetMenuItems(menuId) {
-    let menu = GetMenu(menuId)
-    let items = menu.Options.filter(f => f.onSelect && (f.column === undefined || f.column === currentMenuColumn))
-    if (items.length > 0 && currentMenuItem === '') {
-        currentMenuItem = items[0].text
+    if (id === 'GameSetup') {
+        imu.onUpdate = onGameSetupUpdate
     }
-    return items
 }
 
-function GetMenu(id) {
-    try {
-        return menus.filter(f => f.id === id)[0]
-    } catch { return null }
-}
+// function GetMenuItems(menuId) {
+//     let menu = GetMenu(menuId)
+//     let items = menu.Options.filter(f => f.onSelect && (f.column === undefined || f.column === currentMenuColumn))
+//     if (items.length > 0 && currentMenuItem === '') {
+//         currentMenuItem = items[0].text
+//     }
+//     return items
+// }
+
+// function GetMenu(id) {
+//     try {
+//         return menus.filter(f => f.id === id)[0]
+//     } catch { return null }
+// }
 
 function StartMenu(id) {
     input.listen()
@@ -180,96 +183,13 @@ function drawUI(delta) {
         let paramsTealFrame = { innerRect: { x: 6, y: 8, w: 53 , h: 47 }, type: 'ButtonImage', color: '#122020ff', highlight: '#122020ff', bgcolor: '#000000cc', image: getImage('ui-frame-teal'), imageDown: getImage('ui-frame-teal'), imageHover: getImage('ui-frame-teal') }
         let paramsTealButton = { innerRect: { x: 5, y: 4, w: 9, h: 2 }, type: 'ButtonImage', color: '#122020ff', highlight: '#fa6a0aff', bgcolor: '#000000cc', image: getImage('ui-button-teal'), imageDown: getImage('ui-button-teal-down'), imageHover: getImage('ui-button-teal') }
 
-        // imu.onUpdate = (ui) => {
-        //     ui.Element({ id: 'lblMenu', text: 'Test', rect: { x: 72, y: 74, w: 112, h: 32 }, ...paramsTealButton})
-        // }
         imu.onUpdate = (ui) => {
-            //ui.Element({ id: 'imgGamename', type: 'Image', x: 10, y: 10, image: getImage('title') })
             let frameMenu = ui.Element({ id: 'frameMenu', rect: {x: 38, y: 28, w: 97, h: 96}, ...paramsTealFrame })
-            let menu = GetMenu(currentMenuId)
-            let menuItems = menu.Options.sort((a, b) => b.column !== undefined ? b.column : 0 - a.column !== undefined ? a.column : 0)
 
-            let el = ui.Element({ id: 'lblMenu', text: 'Test', rect: {x: 6, y: 10, w: 86, h: 19}, ...paramsTealButton }, frameMenu)
-            //console.log('el.rect', el.Rect(), el.rect)
-            //imu.RemoveElements()
-            // let dy = menuDy
-            // for (let i in menuItems) {
-            //     let item = menuItems[i].text
-            //     let menuItem = menuItems[i]
-            //     let colr = item === currentMenuItem ? menu.Style.SelectColor : menuItem.onSelect ? menu.Style.SelectableColor : menu.Style.Color
-            //     let txt = `${currentMenuItem === item ? '>' : ' '}${item}${currentMenuItem === item ? '<' : ' ' }`
-            //     if (txt.includes('{') && txt.includes('}') && menuItem.onRender) {
-            //         txt = OnRender(txt, menuItem.onRender)
-            //     }
-            //     //let el = ui.Element({ id: 'lblMenu' + currentMenuId + item + i, text: txt, rect: { x: menuDx, y: dy, w: 64, h: 8 }, color: colr, highlight: colr, bgcolor: '#cccccc00' })
-            //     let el = ui.Element({ id: 'lblMenu' + currentMenuId + item + i, text: txt, rect: {x: 6, y: dy - menuDy + 10, w: 86, h: 19}, ...paramsTealButton }, frameMenu)
-
-            //     if (el.Hover()) {
-            //         if (menuItem.onSelect) {
-            //             currentMenuItem = item
-            //         }
-            //     }
-            //     if (el.Clicked()) {
-            //         if (menuItem.onSelect) {
-            //             currentMenuItem = txt
-            //             Action(menuItem.onSelect)(menuItem.text)
-            //         }
-            //     }
-            //     dy += 22
-            // }
-            // if (currentMenuId === 'SetupEquipment') {
-            //     let elEquip = ui.Element({ id: 'lblEquipMenu', text: 'Squad Equipment', rect: { x: menuDx, y: menuDy + 15, w: 128, h: 8 }, color: menu.Style.Color, highlight: menu.Style.Color, bgcolor: '#cccccc00' })
-            // }
-            // if (currentCharacterEquip && currentMenuId === 'SetupEquipment') {
-            //     let tooltip = ''
-            //     dy = menuDy + 42
-            //     let colDx = 80
-            //     let charName = currentCharacterEquip.split('.')[1].trim()
-            //     let charIndex = parseInt(currentCharacterEquip.split('.')) - 1
-            //     let eqabPoints = squad[charIndex].EquipmentAndAbilities()
-            //     let elSelEquip = ui.Element({ id: 'lblSelEquip', text: `${charName}: Equip & Ability Points: ${eqabPoints}`, rect: { x: colDx, y: menuDy + 30, w: 128, h: 8 }, color: menu.Style.Color, highlight: menu.Style.Color, bgcolor: '#cccccc00' })
-            //     let equiplist = equipment.filter(f => f.characters.includes(charName))
-            //     for (let e in equiplist) {
-            //         let equip = equiplist[e]
-            //         let equipped = squad[charIndex].equipment.filter(f => equip.name === f.name)
-            //         let colr = menu.Style.SelectableColor
-            //         if (equipped.length > 0) {
-            //             colr = menu.Style.Disabled
-            //         }
-
-            //         let el = ui.Element({ id: 'lblEquip' + currentMenuId + equip.name + e, text: equip.name, rect: { x: colDx, y: dy, w: 128, h: 8 }, color: colr, highlight: colr, bgcolor: '#cccccc00' })
-                    
-            //         if (el.Hover()) {
-            //             let attr = [`Attacks: ${equip.attacks}`, `Damage: ${equip.damage}`, `Range: ${equip.range}`, `Cost: ${equip.cost}`]
-            //             if (equip.reload) {
-            //                 attr.push('Requires Reload')
-            //             }
-            //             tooltip = attr.join('\n')
-            //         }
-            //         if (el.Clicked()) {
-            //             if (equipped.length > 0) {
-            //                 squad[charIndex].equipment = squad[charIndex].equipment.filter(f => f.name !== equip.name)
-            //                 squad[charIndex].EquipmentAndAbilities(eqabPoints + equip.cost)
-            //             } else {
-            //                 if (eqabPoints - equip.cost >= 0) {
-            //                     squad[charIndex].equipment.push(equip)
-            //                     squad[charIndex].EquipmentAndAbilities(eqabPoints - equip.cost)
-            //                 }
-            //             }
-            //         }
-                        
-            //         dy += 12
-            //         if (dy > 180) {
-            //             dy = menuDy + 42
-            //             colDx += 90
-            //         }
-            //     }
-
-            //     if (tooltip) {
-            //         ui.RemoveElement('lblTooltip')
-            //         let tip = ui.Element({ id: 'lblTooltip', text: tooltip, x: pointer.x, y: pointer.y + 8, autosize: true, color: menu.Style.SelectableColor, highlight: menu.Style.SelectColor, bgcolor: '#000000dd' })
-            //     }
-            //}
+            let el = ui.Element({ id: 'lblMenu', text: 'Start', rect: {x: 6, y: 10, w: 86, h: 19}, ...paramsTealButton }, frameMenu)
+            if (el.Clicked()) {
+                ChangeMenu('GameSetup')
+            }
         }
     }
     imu.Draw()

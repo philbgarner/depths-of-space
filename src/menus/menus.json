@@ -20,8 +20,6 @@
             "Disabled": "#4a4a4aff"
         },
         "Options": [
-            { "text": "Hire Squad ({0} hired)", "onRender": "callback_OnRenderHireSquad", "width": "90%" },
-            { "text": "Stars: {0}", "onRender": "callback_OnRenderStars", "width": "90%" },
             { "text": "Overseer (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
             { "text": "Trooper (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
             { "text": "Artillerist (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
@@ -30,8 +28,7 @@
             { "text": "Medic (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
             { "text": "Herald (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
             { "text": "Crusader (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
-            { "text": "Bastion (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" },
-            { "text": "Next", "onSelect": "callback_SetupEquipment", "width": "90%", "column": 0 }
+            { "text": "Bastion (x{0})", "onRender": "callback_OnRenderCharacter", "onSelect": "callback_HireCharacter", "width": "90%" }
         ]
     },
     { "id": "SetupEquipment",

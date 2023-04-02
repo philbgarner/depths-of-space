@@ -11,5 +11,7 @@
 
     { "name": "ui-frame-teal", "image": null, "filename": "./images/ui-frame-teal.png"},
     { "name": "ui-button-teal", "image": null, "filename": "./images/ui-button-teal.png"},
-    { "name": "ui-button-teal-down", "image": null, "filename": "./images/ui-button-teal-down.png"}
+    { "name": "ui-button-teal-down", "image": null, "filename": "./images/ui-button-teal-down.png"},
+    { "name": "ui-button-grey", "image": null, "filename": "./images/ui-button-grey.png"},
+    { "name": "ui-button-grey-down", "image": null, "filename": "./images/ui-button-grey-down.png"}
 ]

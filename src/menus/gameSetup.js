@@ -1,0 +1,66 @@
+import { getImage } from '../images.js'
+import characters from '../characters.json'
+import menus from './menus.json'
+import { Character } from '../character.js'
+
+var squad = []
+var stars = 16
+
+let menu = menus.filter(f => f.id === 'GameSetup')[0]
+
+function hireCharacter(name) {
+    let char = new Character(name)
+    if (stars - char.Cost() >= 0) {
+        squad.push(char)
+        stars -= char.Cost()
+    }
+}
+
+function fireCharacter(name) {
+    let char = new Character(name)
+    let charIndex = squad.findIndex(f => f.name === name)
+    if (charIndex > -1) {
+        stars += char.Cost()
+        squad = squad.filter((f, i) => i !== charIndex)
+    }
+}
+
+function onUpdate(ui) {
+    let paramsTealFrame = { innerRect: { x: 6, y: 8, w: 53 , h: 47 }, type: 'ButtonImage', color: '#122020ff', highlight: '#122020ff', bgcolor: '#000000cc', image: getImage('ui-frame-teal'), imageDown: getImage('ui-frame-teal'), imageHover: getImage('ui-frame-teal') }
+    let paramsTealButton = { innerRect: { x: 5, y: 4, w: 9, h: 2 }, type: 'ButtonImage', color: '#122020ff', highlight: '#fa6a0aff', bgcolor: '#000000cc', image: getImage('ui-button-teal'), imageDown: getImage('ui-button-teal-down'), imageHover: getImage('ui-button-teal') }
+    let paramsGreyButton = { innerRect: { x: 5, y: 4, w: 9, h: 2 }, type: 'ButtonImage', color: '#122020ff', highlight: '#122020ff', bgcolor: '#000000cc', image: getImage('ui-button-grey'), imageDown: getImage('ui-button-grey-down'), imageHover: getImage('ui-button-grey') }
+    let paramsLabel = { type: 'Element', color: '#cacacaff', highlight: '#cacacaff', bgcolor: '#00000000' }
+    let frameMenu = ui.Element({ id: 'frameMenu', rect: {x: 5, y: 28, w: 128, h: 160 }, ...paramsTealFrame })
+
+    let statsMenu = ui.Element({ id: 'frameStats', rect: {x: 135, y: 28, w: 128, h: 110 }, ...paramsTealFrame })
+
+    let lblStars = ui.Element({ id: 'lblMenuStars', text: `Stars: ${stars}`, rect: { x: 78, y: 8, w: 64, h: 11 }, ...paramsLabel}, frameMenu)
+    let classDescription = ''
+    let dy = 19
+    for (let o in menu.Options) {
+        let option = menu.Options[o].text
+        let name = option.split(' ')[0]
+        option = option.replace('{0}', squad.filter(f => f.name === name).length)
+        let el = ui.Element({ id: 'lblMenu' + o, text: option, rect: {x: 16, y: dy + 2, w: 76, h: 14}, ...paramsLabel }, frameMenu)
+        let elAdd = ui.Element({ id: 'lblMenuAdd' + o, text: '+', rect: {x: 94, y: dy, w: 14, h: 14}, ...paramsGreyButton }, frameMenu)
+        if (elAdd.Clicked()) {
+            hireCharacter(name)
+        }
+        let elRemove = ui.Element({ id: 'lblMenuRem' + o, text: '-', rect: {x: 109, y: dy, w: 14, h: 14}, ...paramsGreyButton }, frameMenu)
+        if (elRemove.Clicked()) {
+            fireCharacter(name)
+        }
+
+        if (el.Hover() || elAdd.Hover() || elRemove.Hover()) {
+            classDescription = 'hovered ' + name
+        }
+
+        dy += 15
+    }
+
+    if (classDescription.length) {
+        let lblTooltip = ui.Element({ id: 'lblTooltip', text: classDescription, rect: { x: 8, y: 8, w: 110, h: 100 }, ...paramsLabel}, statsMenu)
+    }
+}
+
+export { onUpdate }
