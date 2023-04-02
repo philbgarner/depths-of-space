@@ -34,12 +34,15 @@ function onUpdate(ui) {
 
     let statsMenu = ui.Element({ id: 'frameStats', rect: {x: 135, y: 28, w: 128, h: 110 }, ...paramsTealFrame })
 
+    let buttonsMenu = ui.Element({ id: 'frameButtons', rect: {x: 135, y: 156, w: 128, h: 32 }, ...paramsTealFrame })
+
     let lblStars = ui.Element({ id: 'lblMenuStars', text: `Stars: ${stars}`, rect: { x: 78, y: 8, w: 64, h: 11 }, ...paramsLabel}, frameMenu)
-    let classDescription = ''
+    let classDescription = squad.length === 0 ? 'Hire your squad and click next\nto continue.' : `Squad Size: ${squad.length}` + (stars === 0 ? `\nNo stars remaining.\nClick 'Next'.` : '')
     let dy = 19
     for (let o in menu.Options) {
         let option = menu.Options[o].text
         let name = option.split(' ')[0]
+        let character = characters.filter(f => f.name === name)[0]
         option = option.replace('{0}', squad.filter(f => f.name === name).length)
         let el = ui.Element({ id: 'lblMenu' + o, text: option, rect: {x: 16, y: dy + 2, w: 76, h: 14}, ...paramsLabel }, frameMenu)
         let elAdd = ui.Element({ id: 'lblMenuAdd' + o, text: '+', rect: {x: 94, y: dy, w: 14, h: 14}, ...paramsGreyButton }, frameMenu)
@@ -52,10 +55,18 @@ function onUpdate(ui) {
         }
 
         if (el.Hover() || elAdd.Hover() || elRemove.Hover()) {
-            classDescription = 'hovered ' + name
+            classDescription = [
+                `${name}`, `Cost: ${character.Cost}`, `Melee Skill: ${character.meleeSkill}`, `Gunnery Skill: ${character.gunnerySkill}`, `Speed: ${character.speed}`
+                , `HP: ${character.speed}`, `Equipment/Abilities`, `Points: ${character.equipAbilities}`
+            ].join('\n')
         }
 
         dy += 15
+    }
+
+    let btnNext = ui.Element({ id: 'btnNext', text: 'Next', rect: { x: 72, y: 8, w: 50, h: 16 }, ...paramsTealButton }, buttonsMenu)
+    if (btnNext.Hover()) {
+        classDescription = 'Accept squad and move\non to outfitting equipment\nand abilities.'
     }
 
     if (classDescription.length) {
