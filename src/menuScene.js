@@ -187,11 +187,22 @@ function drawUI(delta) {
         let paramsTealButton = { innerRect: { x: 5, y: 4, w: 9, h: 2 }, type: 'ButtonImage', color: '#122020ff', highlight: '#fa6a0aff', bgcolor: '#000000cc', image: getImage('ui-button-teal'), imageDown: getImage('ui-button-teal-down'), imageHover: getImage('ui-button-teal') }
 
         imu.onUpdate = (ui) => {
-            let frameMenu = ui.Element({ id: 'frameMenu', rect: {x: 38, y: 28, w: 97, h: 96}, ...paramsTealFrame })
+            let frameMenu = ui.Element({ id: 'frameMenu', rect: {x: 38, y: 28, w: 97, h: 96}, ...paramsTealFrame,
+                anim: {
+                    curve: 'bezier',
+                    duration: 100,
+                    params: {
+                        w: 12, h: 12
+                    },
+                    onComplete: (el) => { el }
+                }
+            })
 
-            let el = ui.Element({ id: 'lblMenu', text: 'Start', rect: {x: 6, y: 10, w: 86, h: 19}, ...paramsTealButton }, frameMenu)
-            if (el.Clicked()) {
-                ChangeMenu('GameSetup')
+            if (!frameMenu.anim) {
+                let el = ui.Element({ id: 'lblMenu', text: 'Start', rect: {x: 6, y: 10, w: 86, h: 19}, ...paramsTealButton, }, frameMenu)
+                if (el.Clicked()) {
+                    ChangeMenu('GameSetup')
+                }
             }
         }
     }
