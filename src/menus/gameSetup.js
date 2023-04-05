@@ -101,7 +101,9 @@ function onUpdate(ui) {
             classDescription = 'Accept squad and move\non to outfitting equipment\nand abilities.'
         }
         if (btnNext.Clicked()) {
-            ChangeMenu('SetupEquipment')
+            frameMenu.Animate(90, frameMenu.Rect(), { y: -165 })
+            statsMenu.Animate(90, statsMenu.Rect(), { y: -165 })
+            buttonsMenu.Animate(100, buttonsMenu.Rect(), { y: 220 }, () => ChangeMenu('SetupEquipment'))
         }
     }
 

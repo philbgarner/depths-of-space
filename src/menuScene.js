@@ -201,7 +201,14 @@ function drawUI(delta) {
             if (!frameMenu.anim) {
                 let el = ui.Element({ id: 'lblMenu', text: 'Start', rect: {x: 6, y: 10, w: 86, h: 19}, ...paramsTealButton, }, frameMenu)
                 if (el.Clicked()) {
-                    ChangeMenu('GameSetup')
+                    // frameMenu.anim = {
+                    //     curve: 'bezier',
+                    //     duration: 100,
+                    //     params: {x: 38, y: 28, w: 97, h: 96},
+                    //     onComplete: (el) => { ChangeMenu('GameSetup') }
+                    // }
+                    // frameMenu.rect = {x: -116, y: 10, w: 86, h: 19}
+                    frameMenu.Animate(100, frameMenu.Rect(),  {x: -116, y: 28, w: 12, h: 12 }, () => ChangeMenu('GameSetup'))   
                 }
             }
         }

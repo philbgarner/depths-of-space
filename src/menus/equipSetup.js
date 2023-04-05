@@ -23,31 +23,32 @@ function onUpdate(ui) {
             onComplete: (el) => { el }
         }
     })
-
-    // let eqabMenu = ui.Element({ id: 'eqabMenu', rect: {x: 135, y: 28, w: 128, h: 160 }, ...paramsTealFrame,
-    //     anim: {
-    //         curve: 'bezier',
-    //         duration: 100,
-    //         params: {
-    //             y: -140
-    //         },
-    //         onComplete: (el) => { el }
-    //     }
-    // })
     
     if (!frameMenu.anim) {
         let dy = 9
-        for (let s in squad) {
-            let style = { ...paramsLabel }
-            style.bgcolor = selIndex === s ? '#328464ff' : '#00000000'
-            style.color = selIndex === s ? '#f1f1f1ff' : '#cacacaff'
-            style.highlight = style.color
-            let el = ui.Element({ id: 'lblCharacter' + s, text: squad[s].name, rect: {x: 8, y: dy + 2, w: 76, h: 9}, ...style }, frameMenu)
-
-            if (el.Clicked()) {
-                selIndex = s
+        let eqabMenu = ui.Element({ id: 'eqabMenu', rect: {x: 135, y: 28, w: 128, h: 160 }, ...paramsTealFrame,
+            anim: {
+                curve: 'bezier',
+                duration: 100,
+                params: {
+                    y: -140
+                },
+                onComplete: (el) => { el }
             }
-            dy += 10
+        })
+        if (!eqabMenu.anim) {
+            for (let s in squad) {
+                let style = { ...paramsLabel }
+                style.bgcolor = selIndex === s ? '#328464ff' : '#00000000'
+                style.color = selIndex === s ? '#f1f1f1ff' : '#cacacaff'
+                style.highlight = style.color
+                let el = ui.Element({ id: 'lblCharacter' + s, text: squad[s].name, rect: {x: 8, y: dy + 2, w: 76, h: 9}, ...style }, frameMenu)
+    
+                if (el.Clicked()) {
+                    selIndex = s
+                }
+                dy += 10
+            }
         }
     }
 }
