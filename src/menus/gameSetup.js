@@ -36,7 +36,7 @@ function onUpdate(ui) {
             curve: 'bezier',
             duration: 100,
             params: {
-                y: -64
+                y: -128
             },
             onComplete: (el) => { el }
         }
@@ -101,9 +101,7 @@ function onUpdate(ui) {
             classDescription = 'Accept squad and move\non to outfitting equipment\nand abilities.'
         }
         if (btnNext.Clicked()) {
-            frameMenu.Animate(90, frameMenu.Rect(), { y: -165 })
-            statsMenu.Animate(90, statsMenu.Rect(), { y: -165 })
-            buttonsMenu.Animate(100, buttonsMenu.Rect(), { y: 220 }, () => ChangeMenu('SetupEquipment'))
+            transitionOut(frameMenu, statsMenu, buttonsMenu)
         }
     }
 
@@ -111,6 +109,18 @@ function onUpdate(ui) {
         if (classDescription.length) {
             let lblTooltip = ui.Element({ id: 'lblTooltip', text: classDescription, rect: { x: 8, y: 8, w: 110, h: 100 }, ...paramsLabel}, statsMenu)
         }
+    }
+
+    function transitionOut(frameMenu, statsMenu, buttonsMenu) {
+            let toFrame = { ...frameMenu.Rect() }
+            toFrame.x = -130
+            frameMenu.Animate(290, { ...frameMenu.Rect() }, toFrame)
+            let toStats = { ...statsMenu.Rect() }
+            toStats.x = 320
+            statsMenu.Animate(290, { ...statsMenu.Rect() }, toStats)
+            let toButtons = buttonsMenu.Rect()
+            toButtons.y = 200
+            buttonsMenu.Animate(300, { ...buttonsMenu.Rect() }, toButtons, () => ChangeMenu('SetupEquipment'))
     }
 }
 
