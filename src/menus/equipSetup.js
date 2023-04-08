@@ -23,11 +23,25 @@ function getEquipment(characterType) {
 }
 
 function onUpdate(ui) {
+    let paramsGreyListImage = {
+        scrollAreaImage: {
+            image: getImage('ui-button-scroll-area'),
+            hover: getImage('ui-button-scroll-area'),
+            pressed: getImage('ui-button-scroll-area'),
+            innerRect: { x: 3, y: 4, w: 5, h: 40 }
+        },
+        caratImage: {
+            image: getImage('ui-button-carat'),
+            hover: getImage('ui-button-carat-hover'),
+            pressed: getImage('ui-button-carat-pressed'),
+            innerRect: { x: 3, y: 4, w: 5, h: 40 }
+        }
+    }
     let paramsTealFrame = { innerRect: { x: 6, y: 8, w: 53 , h: 47 }, type: 'ButtonImage', color: '#122020ff', highlight: '#122020ff', bgcolor: '#000000cc', image: getImage('ui-frame-teal'), imageDown: getImage('ui-frame-teal'), imageHover: getImage('ui-frame-teal') }
     let paramsTealButton = { innerRect: { x: 5, y: 4, w: 9, h: 2 }, type: 'ButtonImage', color: '#122020ff', highlight: '#fa6a0aff', bgcolor: '#000000cc', image: getImage('ui-button-teal'), imageDown: getImage('ui-button-teal-down'), imageHover: getImage('ui-button-teal') }
     let paramsGreyButton = { innerRect: { x: 5, y: 4, w: 9, h: 2 }, type: 'ButtonImage', color: '#122020ff', highlight: '#122020ff', bgcolor: '#000000cc', image: getImage('ui-button-grey'), imageDown: getImage('ui-button-grey-down'), imageHover: getImage('ui-button-grey') }
     let paramsLabel = { type: 'Element', color: '#cacacaff', highlight: '#cacacaff', bgcolor: '#00000000' }
-    let frameMenu = ui.Element({ id: 'frameMenuSquad', rect: {x: 5, y: 8, w: 72, h: 160 }, ...paramsTealFrame,
+    let frameMenu = ui.Element({ id: 'frameMenuSquad', rect: {x: 5, y: 8, w: 72, h: 110 }, ...paramsTealFrame,
         anim: {
             curve: 'bezier',
             duration: 100,
@@ -39,8 +53,7 @@ function onUpdate(ui) {
     })
     
     if (!frameMenu.anim) {
-        let dy = 9
-        let eqabMenu = ui.Element({ id: 'eqabMenu', rect: {x: 79, y: 8, w: 235, h: 160 }, ...paramsTealFrame,
+        let eqabMenu = ui.Element({ id: 'eqabMenu', rect: {x: 79, y: 8, w: 235, h: 110 }, ...paramsTealFrame,
             anim: {
                 curve: 'bezier',
                 duration: 100,
@@ -51,31 +64,14 @@ function onUpdate(ui) {
             }
         })
         if (!eqabMenu.anim) {
-            // for (let s in squad) {
-            //     let style = { ...paramsLabel }
-            //     style.bgcolor = selIndex === s ? '#328464ff' : '#00000000'
-            //     style.color = selIndex === s ? '#f1f1f1ff' : '#cacacaff'
-            //     style.highlight = style.color
-                //let el = ui.Element({ id: 'lblCharacter' + s, text: squad[s].name, rect: {x: 8, y: dy + 2, w: 55, h: 9}, ...style }, frameMenu)
-            let el = ui.Element({ id: 'charList', type: 'ListImage', list: squad.map(m => m.name), rect: {x: 8, y: 9, w: 55, h: 140 }}, frameMenu)
+            let el = ui.Element({ id: 'charList', type: 'ListImage', list: squad.map(m => m.name), rect: {x: 8, y: 9, w: 55, h: 90 }, ...paramsGreyListImage}, frameMenu)
             if (el.currentItem !== null && el.currentItem !== selIndex) {
                 selCharacter(el.currentItem)
             }
-            //     dy += 10
-            // }
 
             if (selIndex > -1) {
                 ui.Element({ id: 'charEquip', text: 'Equipment:', rect: { x: 8, y: 8, w: 64, h: 9 }}, eqabMenu)
-                // for (let e in equip) {
-                //     let eq = equip[e]
-                //     ui.Element({ id: 'charEquip' + e, text: eq.name, rect: { x: dx, y: dy, w: 96, h: 9 }, ...paramsLabel}, eqabMenu)
-                //     dy += 10
-                //     if (dy > 145) {
-                //         dy = 19
-                //         dx += 96
-                //     }
-                // }
-                ui.Element({ id: 'charEquipList', type: 'ListImage', list: equip.map(m => m.name), rect: {x: 8, y: 19, w: 128, h: 128 }}, eqabMenu)
+                ui.Element({ id: 'charEquipList', type: 'ListImage', list: equip.map(m => m.name), rect: {x: 8, y: 19, w: 128, h: 80 }, ...paramsGreyListImage}, eqabMenu)
             }
 
             let buttonsMenu = ui.Element({ id: 'frameButtons', rect: {x: 165, y: 160, w: 128, h: 32 }, ...paramsTealFrame,
@@ -104,12 +100,6 @@ function onUpdate(ui) {
     }
 
     function transitionOut(frameMenu, eqabMenu, buttonsMenu, onComplete) {
-        // let toFrame = { ...frameMenu.Rect() }
-        // toFrame.x = -130
-        // frameMenu.Animate(190, { ...frameMenu.Rect() }, toFrame)
-        // let toStats = { ...statsMenu.Rect() }
-        // toStats.x = 320
-        // statsMenu.Animate(190, { ...statsMenu.Rect() }, toStats)
         let toButtons = buttonsMenu.Rect()
         toButtons.y = 200
         buttonsMenu.Animate(200, { ...buttonsMenu.Rect() }, toButtons, onComplete)
