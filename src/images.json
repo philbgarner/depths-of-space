@@ -15,5 +15,15 @@
     { "name": "ui-button-teal", "image": null, "filename": "./images/ui-button-teal.png"},
     { "name": "ui-button-teal-down", "image": null, "filename": "./images/ui-button-teal-down.png"},
     { "name": "ui-button-grey", "image": null, "filename": "./images/ui-button-grey.png"},
-    { "name": "ui-button-grey-down", "image": null, "filename": "./images/ui-button-grey-down.png"}
+    { "name": "ui-button-grey-down", "image": null, "filename": "./images/ui-button-grey-down.png"},
+    { "name": "ui-button-carat-hover", "image": null, "filename": "./images/ui-button-carat-hover.png"},
+    { "name": "ui-button-scroll-area", "image": null, "filename": "./images/ui-button-carat-pressed.png"},
+    { "name": "ui-button-scroll-area", "image": null, "filename": "./images/ui-button-scroll-area.png"},
+    { "name": "ui-button-scroll-down", "image": null, "filename": "./images/ui-button-scroll-down.png"},
+    { "name": "ui-button-scroll-down-hover", "image": null, "filename": "./images/ui-button-scroll-down-hover.png"},
+    { "name": "ui-button-scroll-down-pressed", "image": null, "filename": "./images/ui-button-scroll-down-pressed.png"},
+    { "name": "ui-button-scroll-up", "image": null, "filename": "./images/ui-button-scroll-up.png"},
+    { "name": "ui-button-scroll-up-hover", "image": null, "filename": "./images/ui-button-scroll-up-hover.png"},
+    { "name": "ui-button-scroll-up-pressed", "image": null, "filename": "./images/ui-button-scroll-up-pressed.png"},
+    { "name": "ui-button-carat", "image": null, "filename": "./images/ui-button-carat.png"}
 ]

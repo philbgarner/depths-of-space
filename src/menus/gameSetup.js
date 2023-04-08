@@ -114,13 +114,13 @@ function onUpdate(ui) {
     function transitionOut(frameMenu, statsMenu, buttonsMenu) {
             let toFrame = { ...frameMenu.Rect() }
             toFrame.x = -130
-            frameMenu.Animate(290, { ...frameMenu.Rect() }, toFrame)
+            frameMenu.Animate(190, { ...frameMenu.Rect() }, toFrame)
             let toStats = { ...statsMenu.Rect() }
             toStats.x = 320
-            statsMenu.Animate(290, { ...statsMenu.Rect() }, toStats)
+            statsMenu.Animate(190, { ...statsMenu.Rect() }, toStats)
             let toButtons = buttonsMenu.Rect()
             toButtons.y = 200
-            buttonsMenu.Animate(300, { ...buttonsMenu.Rect() }, toButtons, () => ChangeMenu('SetupEquipment'))
+            buttonsMenu.Animate(200, { ...buttonsMenu.Rect() }, toButtons, () => ChangeMenu('SetupEquipment'))
     }
 }
 
