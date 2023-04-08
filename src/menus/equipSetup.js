@@ -24,11 +24,12 @@ function getEquipment(characterType) {
 
 function onUpdate(ui) {
     let paramsGreyListImage = {
+        scrollbarWidth: 9,
         scrollAreaImage: {
             image: getImage('ui-button-scroll-area'),
             hover: getImage('ui-button-scroll-area'),
             pressed: getImage('ui-button-scroll-area'),
-            innerRect: { x: 3, y: 4, w: 5, h: 40 }
+            innerRect: { x: 3, y: 4, w: 7, h: 40 }
         },
         caratImage: {
             image: getImage('ui-button-carat'),
