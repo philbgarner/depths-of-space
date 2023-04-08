@@ -6,6 +6,7 @@ import { ChangeMenu } from '../menuScene.js'
 import { squad } from './gameSetup.js'
 import equipment from '../equipment.json'
 import { Start } from '../main.js'
+import { buildMap } from '../map.js'
 
 let selIndex = -1
 let equip = []
@@ -34,8 +35,17 @@ function onUpdate(ui) {
         caratImage: {
             image: getImage('ui-button-carat'),
             hover: getImage('ui-button-carat-hover'),
-            pressed: getImage('ui-button-carat-pressed'),
-            innerRect: { x: 3, y: 4, w: 5, h: 40 }
+            pressed: getImage('ui-button-carat-pressed')
+        },
+        upImage: {
+            image: getImage('ui-button-scroll-up'),
+            hover: getImage('ui-button-scroll-up-hover'),
+            pressed: getImage('ui-button-scroll-up-pressed')
+        },
+        downImage: {
+            image: getImage('ui-button-scroll-down'),
+            hover: getImage('ui-button-scroll-down-hover'),
+            pressed: getImage('ui-button-scroll-down-pressed')
         }
     }
     let paramsTealFrame = { innerRect: { x: 6, y: 8, w: 53 , h: 47 }, type: 'ButtonImage', color: '#122020ff', highlight: '#122020ff', bgcolor: '#000000cc', image: getImage('ui-frame-teal'), imageDown: getImage('ui-frame-teal'), imageHover: getImage('ui-frame-teal') }
@@ -89,7 +99,10 @@ function onUpdate(ui) {
                 let btnNext = ui.Element({ id: 'btnNext', text: 'Next', rect: { x: 72, y: 8, w: 50, h: 16 }, ...paramsTealButton }, buttonsMenu)
                 if (btnNext.Clicked()) {
                     equip = []
-                    transitionOut(frameMenu, eqabMenu, buttonsMenu, () => Start(squad))
+                    transitionOut(frameMenu, eqabMenu, buttonsMenu, () => {
+                        buildMap()
+                        Start(squad)
+                    })
                 }
                 let btnPrev = ui.Element({ id: 'btnPrev', text: 'Back', rect: { x: 8, y: 8, w: 50, h: 16 }, ...paramsGreyButton }, buttonsMenu)
                 if (btnPrev.Clicked()) {
