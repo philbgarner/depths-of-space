@@ -25,5 +25,8 @@
     { "name": "ui-button-scroll-up", "image": null, "filename": "./images/ui-button-scroll-up.png"},
     { "name": "ui-button-scroll-up-hover", "image": null, "filename": "./images/ui-button-scroll-up-hover.png"},
     { "name": "ui-button-scroll-up-pressed", "image": null, "filename": "./images/ui-button-scroll-up-pressed.png"},
-    { "name": "ui-button-carat", "image": null, "filename": "./images/ui-button-carat.png"}
+    { "name": "ui-button-carat", "image": null, "filename": "./images/ui-button-carat.png"},
+    { "name": "ui-checkbox", "image": null, "filename": "./images/ui-checkbox.png"},
+    { "name": "ui-checkbox-hover", "image": null, "filename": "./images/ui-checkbox-hover.png"},
+    { "name": "ui-checkbox-pressed", "image": null, "filename": "./images/ui-checkbox-pressed.png"}
 ]

@@ -23,6 +23,10 @@ class Character {
         this.effects = []
     }
 
+    EquipItem(item) {
+        
+    }
+
     /**
      * Iterate over the effects currently active on this character and
      * do housekeeping (decrement ttl, removing ttl = 0, etc.)
