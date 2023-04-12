@@ -180,17 +180,15 @@
 	},
     { "name": "Powered Titanium Armor",
 		"cost": 3,
+		"speed": -2,
 		"characters": ["Crusader", "Bastion"],
-		"effects": [
-            { "attribute": "speed", "target": "self", "amount": -2, "ttl": 0 }
-		]
+		"effects": []
 	},
     { "name": "Powered Titanium Boots",
 		"cost": 2,
+		"speed": 2,
 		"characters": ["Overseer", "Recon", "Crusader", "Bastion"],
-		"effects": [
-            { "attribute": "speed", "target": "self", "amount": 2, "ttl": 0 }
-		]
+		"effects": []
 	},
     { "name": "Laser Scope",
 		"cost": 3,

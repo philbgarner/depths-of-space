@@ -23,8 +23,8 @@ function drawFrame(delta) {
 function handleAction() {
     if (currentPhase() === 'positioning') {
         let units = getUnits(currentTeam().name)
-        console.log(currentTeam())
         if (units.length > 0) {
+            console.log('setting place sprite for', currentTeam(), units[0].sprite)
             setPlacingSprite(units[0].sprite)
         }
     }

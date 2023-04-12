@@ -20,10 +20,10 @@ var units = []
 
 var camera = {
     x: 24,
-    y: 8.5 * gridDimensions,
-    w: 320 / gridDimensions, h: 200 / gridDimensions,
+    y: 8.5 * gridDimensions().y,
+    w: 320 / gridDimensions().x, h: 200 / gridDimensions().y,
     targetX: 0,
-    targetY: 8.5 * gridDimensions,
+    targetY: 8.5 * gridDimensions().y,
 }
 
 function setPlacingSprite(sprite) {
@@ -66,7 +66,7 @@ function drawMap(delta) {
     let ctx = getContext()
     ctx.save()
 
-    ctx.translate(-camera.x, -camera.y)
+    //ctx.translate(-camera.x, -camera.y)
 
     drawImage('mars-scape', 0, 0)
 
@@ -74,35 +74,36 @@ function drawMap(delta) {
     ctx.globalAlpha = gridOpacity
     let tiles = map.tiles
     for (let t in tiles) {
-        let x = tiles[t][0] * gridDimensions
-        let y = tiles[t][1] * gridDimensions
+        let x = tiles[t][0] * gridDimensions().x
+        let y = tiles[t][1] * gridDimensions().y
         drawImage('grid-white', x, y)
     }
 
     for (let t in map.teamA) {
-        let x = map.teamA[t][0] * gridDimensions
-        let y = map.teamA[t][1] * gridDimensions
+        let x = map.teamA[t][0] * gridDimensions().x
+        let y = map.teamA[t][1] * gridDimensions().y
         drawImage('grid-yellow', x, y)
     }
     for (let t in map.teamB) {
-        let x = map.teamB[t][0] * gridDimensions
-        let y = map.teamB[t][1] * gridDimensions
+        let x = map.teamB[t][0] * gridDimensions().x
+        let y = map.teamB[t][1] * gridDimensions().y
         drawImage('grid-yellow', x, y)
     }
     ctx.globalAlpha = ga
 
     if (placingSprite) {
-        console.log('placingSprite', placingSprite)
-        placingSprite.x = pointer.x
-        placingSprite.y = pointer.y
-        placingSprite.draw(delta)
+        placingSprite.x = parseInt(((pointer.x) / gridDimensions().x)) * gridDimensions().x - 12
+        placingSprite.y = parseInt(((pointer.y) / gridDimensions().y)) * gridDimensions().y - 20
+        placingSprite.update(delta)
+        placingSprite.draw()
+        bfontjs.DrawText(getContext(), placingSprite.x + 8, placingSprite.y + 40, 'Unit Name', '#f1f1f1ff', font)
     }
 
     ctx.restore()
 }
 
 function gridDimensions() {
-    return { x: gridDimensions, y: gridDimensions }
+    return { x: gridSize, y: gridSize }
 }
 
 function buildMap() {
@@ -126,6 +127,7 @@ function buildMap() {
         tiles: tiles, teamA: teamATiles, teamB: teamBTiles, allTiles: tiles
     }
     map.tiles = map.tiles.filter(f => !map.teamA.filter(a => a[0] === f[0] && a[1] === f[1]).length && !map.teamB.filter(b => f[0] === b[0] && f[1] === b[1]).length)
+    console.log('map =', map)
     return map
 }
 

@@ -105,16 +105,18 @@ function onUpdate(ui) {
                 var listEquip = ui.Element({ id: 'charEquipList', type: 'ListImage', list: equip.map(m => m.name), rect: {x: 8, y: 19, w: 128, h: 80 }, ...paramsGreyListImageMulti}, eqabMenu)
                 let eq = equip[listEquip.hoverItem]
                 if (eq) {
-                    let classDescription = [
-                        eq ? `${eq.name} (Cost: ${eq.cost})` : '',
-                        `Melee Skill: ${character.MeleeSkill()} (${el.currentItem !== null && eq.range === 0 ? `+${eq.damage}` : ''})`,
-                        `Gunnery Skill: ${character.GunnerySkill()} (${el.currentItem !== null && eq.range > 0 ? `+${eq.damage}` : ''})`,
-                        `Speed: ${character.Speed()} (${el.currentItem !== null && eq.effects.length ? `+${eq.effects.filter(f => f.attribte === 'speed' && target === 'self').map(m => m.amount).reduce((a, b) => a + b, 0)}` : ''})`,
-                        `HP: ${character.Hp()}`,
-                        `Equipment/Abilities`,
-                        `Points: ${character.EquipmentAndAbilities()} (${el.currentItem !== null ? `-${eq.cost}` : ''})`
-                    ].join('\n')
-                    ui.Element({ id: 'charEquipDescription', text: classDescription, rect: { x: 140, y: 8, w: 64, h: 9 }}, eqabMenu)              
+                    let classDescription = []
+                    if (eq.speed) {
+                        classDescription.push(`Speed ${eq.speed}`)
+                    }
+                    if (eq.range > 0) {
+                        classDescription.push(`Gunnery ${eq.damage}`)
+                        classDescription.push(`Range ${eq.range}`)
+                    } else {
+                        classDescription.push(`Melee ${eq.damage}`)
+                    }
+                    classDescription.push(`Cost ${eq.cost}`)
+                    ui.Element({ id: 'charEquipDescription', text: classDescription.join('\n'), rect: { x: 140, y: 18, w: 64, h: 9 }}, eqabMenu)              
                 }
             }
 
