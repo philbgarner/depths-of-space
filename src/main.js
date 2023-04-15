@@ -9,7 +9,7 @@ import { drawFrame as drawMainMenu, StartMenu } from './menuScene.js'
 import { set, setDictionary } from './grammar.js'
 import input from './input.js'
 import { addTeam, currentTeam } from './teams.js'
-import { addUnit } from './map.js'
+import { addUnit, gridDimensions } from './map.js'
 
 var dateNow = Date.now()
 var dateThen = Date.now()
@@ -19,6 +19,12 @@ var targetDelta = 16 // Roughly 60fps by default
 var currentScene = 'mainMenu'
 
 var pointer = { x: 0, y: 0 }
+
+var gameMap = null
+
+function getPointer() {
+    return { ...pointer, cellX: () => parseInt(pointer.x / gridDimensions().x), cellY: () => parseInt(pointer.y / gridDimensions().y) }
+}
 
 function setTargetFrameRate(target) {
     targetDelta = parseInt(1000 / target) // Number of ms divided by target fps
@@ -76,7 +82,9 @@ async function StartMainMenu() {
     window.requestAnimationFrame(requestAnimationFrame)
 }
 
-async function Start(squad) {
+async function Start(squad, map) {
+
+    gameMap = map
 
     input.unlisten()
     let canvas = document.getElementById('maincanvas')
@@ -97,4 +105,4 @@ async function Start(squad) {
     window.requestAnimationFrame(requestAnimationFrame)
 }
 
-export { Start, StartMainMenu, pointer }
+export { Start, StartMainMenu, getPointer, pointer, gameMap }

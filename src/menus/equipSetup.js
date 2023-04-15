@@ -135,8 +135,7 @@ function onUpdate(ui) {
                 if (btnNext.Clicked()) {
                     equip = []
                     transitionOut(frameMenu, eqabMenu, buttonsMenu, () => {
-                        buildMap()
-                        Start(squad)
+                        Start(squad, buildMap())
                     })
                 }
                 let btnPrev = ui.Element({ id: 'btnPrev', text: 'Back', rect: { x: 8, y: 8, w: 50, h: 16 }, ...paramsGreyButton }, buttonsMenu)

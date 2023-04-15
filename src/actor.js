@@ -1,4 +1,4 @@
-import { gridSize } from "./map.js"
+import { gridDimensions } from "./map.js"
 import { buildSprite } from "./sprites.js"
 import { getContext } from "./images.js"
 
@@ -15,7 +15,7 @@ class Actor {
     }
 
     MapCoords() {
-        return { x: parseInt(this.sprite.x / gridSize().x), y: parseInt(this.sprite.y / gridSize().y) }
+        return { x: parseInt(this.sprite.x / gridDimensions().x), y: parseInt(this.sprite.y / gridDimensions().y) }
     }
 
     Draw(delta) {

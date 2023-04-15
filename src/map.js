@@ -21,13 +21,22 @@ var units = []
 var camera = {
     x: 24,
     y: 8.5 * gridDimensions().y,
+    //x: 0, y: 0,
     w: 320 / gridDimensions().x, h: 200 / gridDimensions().y,
-    targetX: 0,
+    targetX: 24,
     targetY: 8.5 * gridDimensions().y,
+}
+
+function getCamera() {
+    return { ...camera, cellX: () => parseInt(camera.x / gridDimensions().x), cellY: () => parseInt(camera.y / gridDimensions().y) }
 }
 
 function setPlacingSprite(sprite) {
     placingSprite = sprite
+}
+
+function getPlacingSprite() {
+    return placingSprite
 }
 
 function triangleContains(ax, ay, bx, by, cx, cy, x, y) {
@@ -126,9 +135,18 @@ function buildMap() {
     map = {
         tiles: tiles, teamA: teamATiles, teamB: teamBTiles, allTiles: tiles
     }
+    map.hasTile = (x, y) => {
+        return map.tiles.filter(f => f[0] === x && f[1] === y).length > 0
+    }
+    map.hasTeamATile = (x, y) => {
+        return map.teamA.filter(f => f[0] === x && f[1] === y).length > 0
+    }
+    map.hasTeamBTile = (x, y) => {
+        return map.teamB.filter(f => f[0] === x && f[1] === y).length > 0
+    }
     map.tiles = map.tiles.filter(f => !map.teamA.filter(a => a[0] === f[0] && a[1] === f[1]).length && !map.teamB.filter(b => f[0] === b[0] && f[1] === b[1]).length)
     console.log('map =', map)
     return map
 }
 
-export { buildMap, drawMap, gridDimensions as gridSize, addUnit, setPlacingSprite, getUnits }
+export { buildMap, drawMap, gridDimensions, addUnit, setPlacingSprite, getPlacingSprite, getUnits, getCamera }

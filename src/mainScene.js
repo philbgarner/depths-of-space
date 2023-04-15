@@ -1,7 +1,7 @@
 import { getContext, getImage } from "./images.js"
-import { drawMap, getUnits, setPlacingSprite } from "./map.js"
+import { getCamera, drawMap, getUnits, setPlacingSprite, getPlacingSprite } from "./map.js"
 import { currentPhase, currentTeam } from "./teams.js"
-import { pointer } from "./main.js"
+import { getPointer, gameMap } from "./main.js"
 
 let imu = null
 
@@ -40,10 +40,27 @@ function drawUI(delta) {
         imu.font = font
 
         imu.onUpdate = (ui) => {
+            if (currentPhase() === 'positioning') {
+                let cellx = getPointer().cellX() + getCamera().cellX()
+                let celly = getPointer().cellY() + getCamera().cellY()
+                let bg = ui.Element({ id: 'lblBg', text: ``, rect: { x: 0, y: 0, w: 320, h: 200 }, color: '#f1f100ff', color: '#f1f100ff', bgcolor: '#00000000'})
+                if (bg.Hover() && getPlacingSprite() !== null) {
+                    if (gameMap.hasTeamATile(cellx, celly)) {
+                        tooltip = 'Place unit.'
+                    } else {
+                        tooltip = `Invalid location (${cellx},${celly}), place inside the yellow area.`
+                    }
+                }
+                if (bg.Clicked()) {
+                    setPlacingSprite(null)
+                    tooltip = `Placed at ${cellx}, ${celly}.`
+                }
+            }
+
             let phase = currentPhase().slice(0, 1).toUpperCase() + currentPhase().slice(1)
             ui.Element({ id: 'lblPhase', text: `${phase}: ${currentTeam().name}`, rect: { x: 10, y: 3, w: 300, h: 9 }, color: '#f1f100ff', color: '#f1f100ff', bgcolor: '#000000cc'})
 
-            ui.Element({ id: 'lblTooltip', text: tooltip, rect: { x: 0, y: 0, w: 240, h: 10 }, color: '#f1f1f1ff', highlight: '#f1f1f1ff', bgcolor: '#cccccc00' })
+            ui.Element({ id: 'lblTooltip', text: tooltip, rect: { x: 0, y: 190, w: 240, h: 10 }, color: '#f1f1f1ff', highlight: '#f1f1f1ff', bgcolor: '#000000cc' })
         }
     }
     imu.Draw()
