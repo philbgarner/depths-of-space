@@ -7,7 +7,12 @@ class Actor {
         this.team = params.team
         this.name = params.name
         this.character = params.character
+        this.placed = false
         this.sprite = buildSprite(params.spriteName, params.x ? params.x : 0, params.y ? params.y : 0, 'idle')
+    }
+
+    MapPosition() {
+        return { x: parseInt(this.sprite.x / gridDimensions().x), y: parseInt(this.sprite.y / gridDimensions().y) }
     }
 
     Position() {

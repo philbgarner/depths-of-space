@@ -1,6 +1,6 @@
 import Actor from "./actor.js"
 import { getContext, drawImage } from "./images.js"
-import { getTeam } from "./teams.js"
+import { getTeam, getTeams } from "./teams.js"
 import { pointer } from "./main.js"
 
 var map = null
@@ -19,9 +19,9 @@ var placingSprite = null
 var units = []
 
 var camera = {
-    x: 24,
-    y: 8.5 * gridDimensions().y,
-    //x: 0, y: 0,
+    //x: 24,
+    //y: 8.5 * gridDimensions().y,
+    x: 0, y: 0,
     w: 320 / gridDimensions().x, h: 200 / gridDimensions().y,
     targetX: 24,
     targetY: 8.5 * gridDimensions().y,
@@ -63,7 +63,6 @@ function addUnit(teamName, unit) {
 }
 
 function getUnits(teamName) {
-    console.log(teamName, units)
     if (teamName) {
         return units.filter(f => f.team.name === teamName)
     } else {
@@ -107,6 +106,14 @@ function drawMap(delta) {
         placingSprite.draw()
         bfontjs.DrawText(getContext(), placingSprite.x + 8, placingSprite.y + 40, 'Unit Name', '#f1f1f1ff', font)
     }
+
+    getTeams().forEach(team => {
+        let units = getUnits(team.name).filter(f => f.placed)
+        for (let u in units) {
+            units[u].sprite.update(delta)
+            units[u].sprite.draw()
+        }
+    })
 
     ctx.restore()
 }

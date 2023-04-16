@@ -21,6 +21,10 @@ function getTeam(name) {
     return team.length > 0 ? team[0] : null
 }
 
+function getTeams() {
+    return teams
+}
+
 function currentTeam() {
     return teams[teamIndex]
 }
@@ -39,4 +43,4 @@ function nextTeam() {
     teamIndex = teamIndex >= teams.length ? 0 : teamIndex
 }
 
-export { addTeam, currentTeam, currentPhase, nextPhase, getTeam, nextTeam }
+export { addTeam, currentTeam, currentPhase, nextPhase, getTeam, nextTeam, getTeams }
