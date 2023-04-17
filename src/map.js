@@ -44,8 +44,7 @@ function getCamera() {
             camera.targetX = x
             camera.targetY = y
             camera.targetDuration = duration
-            camera.elapsed = 0
-            console.log(camera)
+            camera.targetElapsed = 0
         }
     }
 }
