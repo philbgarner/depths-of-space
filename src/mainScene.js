@@ -38,6 +38,8 @@ function handleAction() {
             setPlacingSprite(units[0].sprite)
         } else if (getUnits().filter(f => !f.placed).length > 0) {
             nextTeam()
+            let home = currentTeam().homePosition
+            getCamera().setTarget(home.x, home.y, 1500)
             handleAction()
         } else {
             nextPhase()
@@ -76,6 +78,8 @@ function drawUI(delta) {
                     currentUnit = null
                     tooltip = `Placed at ${cellx}, ${celly}.`
                     nextTeam()
+                    let home = currentTeam().homePosition
+                    getCamera().setTarget(home.x, home.y, 1500)        
                     delay(300).then(() => handleAction())
                 }
             }

@@ -95,6 +95,7 @@ async function Start(squad, map) {
     
     for (let s in squad) {
         addUnit('Team Alpha', squad[s])
+        addUnit('Team Bravo', JSON.parse(JSON.stringify(squad[s])))
     }
 
     setTargetFrameRate(60)

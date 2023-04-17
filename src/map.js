@@ -19,16 +19,35 @@ var placingSprite = null
 var units = []
 
 var camera = {
-    //x: 24,
-    //y: 8.5 * gridDimensions().y,
-    x: 0, y: 0,
+    x: 24,
+    y: 8.5 * gridDimensions().y,
+    // x: 0, y: 0,
     w: 320 / gridDimensions().x, h: 200 / gridDimensions().y,
     targetX: 24,
     targetY: 8.5 * gridDimensions().y,
+    targetStartX: 24,
+    targetStartY: 8.5 * gridDimensions().y,
+    targetDuration: 0,
+    targetElapsed: 0
+}
+
+function BezierBlend(t)
+{
+    return t * t * (3.0 - 2.0 * t)
 }
 
 function getCamera() {
-    return { ...camera, cellX: () => parseInt(camera.x / gridDimensions().x), cellY: () => parseInt(camera.y / gridDimensions().y) }
+    return { ...camera, cellX: () => parseInt(camera.x / gridDimensions().x), cellY: () => parseInt(camera.y / gridDimensions().y),
+        setTarget: (x, y, duration) => {
+            camera.targetStartX = camera.x
+            camera.targetStartY = camera.y
+            camera.targetX = x
+            camera.targetY = y
+            camera.targetDuration = duration
+            camera.elapsed = 0
+            console.log(camera)
+        }
+    }
 }
 
 function setPlacingSprite(sprite) {
@@ -74,7 +93,7 @@ function drawMap(delta) {
     let ctx = getContext()
     ctx.save()
 
-    //ctx.translate(-camera.x, -camera.y)
+    ctx.translate(-camera.x, -camera.y)
 
     drawImage('mars-scape', 0, 0)
 
@@ -116,6 +135,19 @@ function drawMap(delta) {
     })
 
     ctx.restore()
+
+    if (camera.targetDuration > 0) {
+        //parseInt(startVal + (this.anim.destination[param] - startVal) * BezierBlend(this.anim.elapsed / this.anim.duration))
+        camera.x = parseInt(camera.targetStartX + (camera.targetX - camera.targetStartX) * BezierBlend(camera.targetElapsed / camera.targetDuration))
+        camera.y = parseInt(camera.targetStartY + (camera.targetY - camera.targetStartY) * BezierBlend(camera.targetElapsed / camera.targetDuration))
+        camera.targetElapsed += delta
+        if (camera.targetElapsed >= camera.targetDuration) {
+            camera.targetDuration = 0
+            camera.x = camera.targetX
+            camera.y = camera.targetY
+        }
+    }
+    bfontjs.DrawText(getContext(), 0, 20, JSON.stringify(camera).replaceAll('{', '').replaceAll('}', ''), '#f1f1f1ff', font)
 }
 
 function gridDimensions() {
