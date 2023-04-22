@@ -14,7 +14,7 @@ function addTeam(name, turnOrderRollDice) {
         homePosition: { x: 24, y: 8.5 * gridDimensions().y }
     }
     if (teams.length % 2 === 1) {
-        team.homePosition = { x: 320 - 24, y: 8.5 * gridDimensions().y }
+        team.homePosition = { x: 600, y: 8.5 * gridDimensions().y }
     }
     teams.push(team)
     teams.sort((a, b) => b.order - a.order)

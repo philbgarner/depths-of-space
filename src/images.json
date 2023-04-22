@@ -1,5 +1,8 @@
 [
     { "name": "grid-white", "image": null, "filename": "./images/GridWhite.png" },
+    { "name": "grid-selected", "image": null, "filename": "./images/GridSelected.png" },
+    { "name": "unit-selected", "image": null, "filename": "./images/UnitSelected.png" },
+    { "name": "grid-green", "image": null, "filename": "./images/GridGreen.png" },
     { "name": "grid-yellow", "image": null, "filename": "./images/GridYellow.png" },
     { "name": "player-walk", "image": null, "filename": "./images/anims/PlayerWalk 48x48.png" },
     { "name": "player-death", "image": null, "filename": "./images/anims/Player Death 64x64.png" },

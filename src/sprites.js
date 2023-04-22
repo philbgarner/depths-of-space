@@ -1,4 +1,4 @@
-import { drawImage, getImages } from './images.js'
+import { drawImage, getContext, getImages } from './images.js'
 import animations from './sprites.json'
 
 function lerp (start, end, amt){
@@ -33,7 +33,8 @@ function buildSprite(name, x, y, pose, onComplete) {
         framesImage: null,
         currentFrame: 0,
         updateDelta: 0,
-        play: true
+        play: true,
+        flipped: false
     }
     sprite.SetAnimation = (animation, pose, onComplete) => {
         sprite.animStartTime = getMsSinceMidnight(new Date())
@@ -73,7 +74,7 @@ function buildSprite(name, x, y, pose, onComplete) {
     sprite.draw = (offsetx, offsety) => {
         offsetx = offsetx ? offsetx : 0
         offsety = offsety ? offsety : 0
-        drawImage(sprite.framesImage, sprite.x + offsetx, sprite.y + offsety, sprite.frames[sprite.currentFrame])
+        drawImage(sprite.framesImage, sprite.x + offsetx, sprite.y + offsety, sprite.frames[sprite.currentFrame], sprite.flipped)
     }
     sprite.moveTo = async (x, y, speed) => {
         return new Promise(async (resolve, reject) => {

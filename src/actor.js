@@ -9,6 +9,7 @@ class Actor {
         this.character = params.character
         this.placed = false
         this.sprite = buildSprite(params.spriteName, params.x ? params.x : 0, params.y ? params.y : 0, 'idle')
+        this.sprite.actor = this
     }
 
     MapPosition() {

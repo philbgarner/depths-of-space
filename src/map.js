@@ -1,7 +1,8 @@
 import Actor from "./actor.js"
 import { getContext, drawImage } from "./images.js"
-import { getTeam, getTeams } from "./teams.js"
-import { pointer } from "./main.js"
+import { currentPhase, getTeam, getTeams } from "./teams.js"
+import { getPointer } from "./main.js"
+import { getCurrentUnit } from "./mainScene.js"
 
 var map = null
 
@@ -16,19 +17,41 @@ var startAreaHeight = 24
 
 var placingSprite = null
 
+var movementTiles = []
+
 var units = []
 
 var camera = {
     x: 24,
     y: 8.5 * gridDimensions().y,
     // x: 0, y: 0,
-    w: 320 / gridDimensions().x, h: 200 / gridDimensions().y,
+    w: width * gridDimensions().x, h: height * gridDimensions().y,
     targetX: 24,
     targetY: 8.5 * gridDimensions().y,
     targetStartX: 24,
     targetStartY: 8.5 * gridDimensions().y,
     targetDuration: 0,
     targetElapsed: 0
+}
+
+function setPotentialMoves(unit) {
+    movementTiles = []
+    
+    function handleMove(tx, ty, tiles, dist) {
+        dist = parseFloat(dist)
+        if (dist < 0) {
+            return
+        }
+        let tileList = tiles.filter(f => f.x === tx && f.y === ty)
+        if (tileList.length === 0) {
+            tiles.push([tx, ty])
+            handleMove(tx + 1, ty, tiles, dist - 1)
+            handleMove(tx, ty - 1, tiles, dist - 1)
+            handleMove(tx - 1, ty, tiles, dist - 1)
+            handleMove(tx, ty + 1, tiles, dist - 1)
+        }
+    }
+    handleMove(unit.x, unit.y, movementTiles, unit.character.Speed())
 }
 
 function BezierBlend(t)
@@ -67,7 +90,7 @@ function triangleContains(ax, ay, bx, by, cx, cy, x, y) {
 
 }
 
-function addUnit(teamName, unit) {
+function addUnit(teamName, unit, flipped) {
     let actor = new Actor({
         team: getTeam(teamName),
         name: unit.name,
@@ -76,6 +99,9 @@ function addUnit(teamName, unit) {
         x: 0,
         y: 0
     })
+    if (flipped) {
+        actor.sprite.flipped = flipped
+    }
     units.push(actor)
     return actor
 }
@@ -88,6 +114,11 @@ function getUnits(teamName) {
     }
 }
 
+function getUnit(x, y) {
+    let unit = units.filter(f => f.x === x && f.y === y)
+    return unit.length > 0 ? unit[0] : null
+}
+
 function drawMap(delta) {
     let ctx = getContext()
     ctx.save()
@@ -96,42 +127,61 @@ function drawMap(delta) {
 
     drawImage('mars-scape', 0, 0)
 
-    let ga = ctx.globalAlpha
-    ctx.globalAlpha = gridOpacity
-    let tiles = map.tiles
-    for (let t in tiles) {
-        let x = tiles[t][0] * gridDimensions().x
-        let y = tiles[t][1] * gridDimensions().y
-        drawImage('grid-white', x, y)
-    }
+    let cellx = parseInt((getPointer().x + getCamera().x) / gridDimensions().x)
+    let celly = parseInt((getPointer().y + getCamera().y) / gridDimensions().y)
 
-    for (let t in map.teamA) {
-        let x = map.teamA[t][0] * gridDimensions().x
-        let y = map.teamA[t][1] * gridDimensions().y
-        drawImage('grid-yellow', x, y)
+    if (currentPhase() === 'positioning') {
+        let ga = ctx.globalAlpha
+        ctx.globalAlpha = gridOpacity
+        
+        let tiles = map.tiles
+        for (let t in tiles) {
+            let x = tiles[t][0] * gridDimensions().x
+            let y = tiles[t][1] * gridDimensions().y
+            drawImage('grid-white', x, y)
+        }
+
+        for (let t in map.teamA) {
+            let x = map.teamA[t][0] * gridDimensions().x
+            let y = map.teamA[t][1] * gridDimensions().y
+            drawImage('grid-yellow', x, y)
+        }
+        for (let t in map.teamB) {
+            let x = map.teamB[t][0] * gridDimensions().x
+            let y = map.teamB[t][1] * gridDimensions().y
+            drawImage('grid-yellow', x, y)
+        }
+        ctx.globalAlpha = ga
     }
-    for (let t in map.teamB) {
-        let x = map.teamB[t][0] * gridDimensions().x
-        let y = map.teamB[t][1] * gridDimensions().y
-        drawImage('grid-yellow', x, y)
-    }
-    ctx.globalAlpha = ga
 
     if (placingSprite) {
-        placingSprite.x = parseInt(((pointer.x) / gridDimensions().x)) * gridDimensions().x - 12
-        placingSprite.y = parseInt(((pointer.y) / gridDimensions().y)) * gridDimensions().y - 20
+        placingSprite.x = cellx * gridDimensions().x - 12
+        placingSprite.y = celly * gridDimensions().y - 20
         placingSprite.update(delta)
         placingSprite.draw()
-        bfontjs.DrawText(getContext(), placingSprite.x + 8, placingSprite.y + 40, 'Unit Name', '#f1f1f1ff', font)
+        bfontjs.DrawText(getContext(), placingSprite.x + 12, placingSprite.y + 44, placingSprite.actor.name, '#000000cc', font)
+        bfontjs.DrawText(getContext(), placingSprite.x + 12, placingSprite.y + 43, placingSprite.actor.name, '#f1f1f1ff', font)
     }
+
+    movementTiles.forEach(t => drawImage('grid-green', t[0] * gridDimensions().x, t[1] * gridDimensions().y))
 
     getTeams().forEach(team => {
         let units = getUnits(team.name).filter(f => f.placed)
         for (let u in units) {
             units[u].sprite.update(delta)
+            let colr = '#f1f1f1cc'
+            if (getCurrentUnit() === units[u]) {
+                colr = '#f1f1f1ff'
+                drawImage('unit-selected', units[u].x * gridDimensions().x, units[u].y * gridDimensions().y)
+            }
             units[u].sprite.draw()
+            bfontjs.DrawText(getContext(), units[u].sprite.x + 12, units[u].sprite.y + 44, units[u].name, '#000000cc', font)
+            bfontjs.DrawText(getContext(), units[u].sprite.x + 12, units[u].sprite.y + 43, units[u].name, colr, font)
         }
     })
+
+    // Highlighted mouse cell.
+    drawImage('grid-selected', cellx * gridDimensions().x, celly * gridDimensions().y)
 
     ctx.restore()
 
@@ -146,7 +196,6 @@ function drawMap(delta) {
             camera.y = camera.targetY
         }
     }
-    bfontjs.DrawText(getContext(), 0, 20, JSON.stringify(camera).replaceAll('{', '').replaceAll('}', ''), '#f1f1f1ff', font)
 }
 
 function gridDimensions() {
@@ -165,6 +214,7 @@ function buildMap() {
             if (triangleContains(0, parseInt(height / 2) - parseInt(startAreaHeight / 2), startAreaWidth, parseInt(height / 2), 0, parseInt(height / 2) + parseInt(startAreaHeight / 2), x, y)) {
                 teamATiles.push([x, y])
             }
+            //if (triangleContains(width, parseInt(height / 2) - parseInt(startAreaHeight / 2), width - startAreaWidth, parseInt(height / 2), width, parseInt(height / 2) + parseInt(startAreaHeight / 2), x, y)) {
             if (triangleContains(width, parseInt(height / 2) - parseInt(startAreaHeight / 2), width - startAreaWidth, parseInt(height / 2), width, parseInt(height / 2) + parseInt(startAreaHeight / 2), x, y)) {
                 teamBTiles.push([x, y])
             }
@@ -187,4 +237,4 @@ function buildMap() {
     return map
 }
 
-export { buildMap, drawMap, gridDimensions, addUnit, setPlacingSprite, getPlacingSprite, getUnits, getCamera }
+export { buildMap, drawMap, gridDimensions, addUnit, setPlacingSprite, getPlacingSprite, getUnits, getUnit, getCamera, setPotentialMoves }

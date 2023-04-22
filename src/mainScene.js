@@ -1,5 +1,5 @@
 import { getContext, getImage } from "./images.js"
-import { getCamera, drawMap, getUnits, setPlacingSprite, getPlacingSprite, gridDimensions } from "./map.js"
+import { getCamera, drawMap, getUnit, getUnits, setPlacingSprite, getPlacingSprite, gridDimensions, setPotentialMoves } from "./map.js"
 import { currentPhase, currentTeam, nextPhase, nextTeam } from "./teams.js"
 import { getPointer, gameMap } from "./main.js"
 
@@ -10,6 +10,10 @@ let ctx = null
 let tooltip = ''
 
 let currentUnit = null
+
+function getCurrentUnit() {
+    return currentUnit
+}
 
 function delay(timeout) {
     return new Promise((resolve, reject) => {
@@ -57,10 +61,10 @@ function drawUI(delta) {
         imu.font = font
 
         imu.onUpdate = (ui) => {
+            let cellx = parseInt((getPointer().x + getCamera().x) / gridDimensions().x)
+            let celly = parseInt((getPointer().y + getCamera().y) / gridDimensions().y)
+            let bg = ui.Element({ id: 'lblBg', text: ``, rect: { x: 0, y: 0, w: 320, h: 200 }, color: '#f1f100ff', color: '#f1f100ff', bgcolor: '#00000000'})
             if (currentPhase() === 'positioning') {
-                let cellx = getPointer().cellX() + getCamera().cellX()
-                let celly = getPointer().cellY() + getCamera().cellY()
-                let bg = ui.Element({ id: 'lblBg', text: ``, rect: { x: 0, y: 0, w: 320, h: 200 }, color: '#f1f100ff', color: '#f1f100ff', bgcolor: '#00000000'})
                 if (bg.Hover() && currentUnit) {
                     if (gameMap.hasTeamATile(cellx, celly)) {
                         tooltip = 'Place unit.'
@@ -82,6 +86,16 @@ function drawUI(delta) {
                     getCamera().setTarget(home.x, home.y, 1500)        
                     delay(300).then(() => handleAction())
                 }
+            } else if (currentPhase() === 'movement') {
+                if (bg.Clicked() && currentUnit === null) {
+                    let unit = getUnit(cellx, celly)
+                    if (unit) {
+                        currentUnit = unit
+                        setPotentialMoves(unit)
+                    }
+                } else {
+                    currentUnit = null
+                }
             }
 
             let phase = currentPhase().slice(0, 1).toUpperCase() + currentPhase().slice(1)
@@ -93,4 +107,4 @@ function drawUI(delta) {
     imu.Draw()
 }
 
-export { drawFrame, StartScene }
+export { drawFrame, StartScene, getCurrentUnit }

@@ -19,13 +19,27 @@ function getImages() {
     return images
 }
 
-function drawImage(name, x, y, srcRect) {
+function drawImage(name, x, y, srcRect, flipped) {
     let img = images.filter(f => f.name === name)
     if (img.length > 0) {
         if (srcRect) {
-            ctx.drawImage(img[0].image, srcRect.x, srcRect.y, srcRect.w, srcRect.h, x, y, srcRect.w, srcRect.h)
+            if (flipped) {
+                ctx.save()
+                ctx.scale(-1, 1)
+                ctx.drawImage(img[0].image, srcRect.x, srcRect.y, srcRect.w, srcRect.h, -x - srcRect.w, y, srcRect.w, srcRect.h)    
+                ctx.restore()
+            } else {
+                ctx.drawImage(img[0].image, srcRect.x, srcRect.y, srcRect.w, srcRect.h, x, y, srcRect.w, srcRect.h)    
+            }
         } else {
-            ctx.drawImage(img[0].image, x, y)
+            if (flipped) {
+                ctx.save()
+                ctx.scale(-1, 1)
+                ctx.drawImage(img[0].image, x - srcRect.w, y, srcRect.w, srcRect.h)    
+                ctx.restore()
+            } else {
+                ctx.drawImage(img[0].image, x, y)
+            }
         }
     }
 }
