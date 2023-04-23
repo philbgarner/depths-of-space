@@ -1,6 +1,7 @@
 [
     { "name": "grid-white", "image": null, "filename": "./images/GridWhite.png" },
     { "name": "grid-selected", "image": null, "filename": "./images/GridSelected.png" },
+    { "name": "grid-movement-node", "image": null, "filename": "./images/GridMoveNode.png" },
     { "name": "unit-selected", "image": null, "filename": "./images/UnitSelected.png" },
     { "name": "grid-green", "image": null, "filename": "./images/GridGreen.png" },
     { "name": "grid-yellow", "image": null, "filename": "./images/GridYellow.png" },

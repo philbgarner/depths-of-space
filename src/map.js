@@ -253,7 +253,7 @@ function drawMap(delta) {
    
     if (getPotentialMoves().length > 0) {
         getPotentialMoves().forEach(loc => {
-            drawImage('grid-selected', loc.x * gridDimensions().x, loc.y * gridDimensions().y)
+            drawImage('grid-movement-node', loc.x * gridDimensions().x, loc.y * gridDimensions().y)
         })
     }
 
