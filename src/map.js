@@ -35,8 +35,12 @@ var camera = {
     targetElapsed: 0
 }
 
-function getPotentialMoves() {
+function getPathMoves() {
     return movementPath
+}
+
+function getPotentialMoves() {
+    return movementTiles
 }
 
 function setPotentialMoves(unit, destX, destY) {
@@ -148,6 +152,10 @@ function clearPotentialMoves() {
     movementTiles = []
 }
 
+function clearPathMoves() {
+    movementPath = []
+}
+
 function BezierBlend(t)
 {
     return t * t * (3.0 - 2.0 * t)
@@ -250,8 +258,8 @@ function drawMap(delta) {
 
     movementTiles.forEach(t => drawImage('grid-green', t[0] * gridDimensions().x, t[1] * gridDimensions().y))
    
-    if (getPotentialMoves().length > 0) {
-        getPotentialMoves().forEach((loc, index, arr) => {
+    if (getPathMoves().length > 0) {
+        getPathMoves().forEach((loc, index, arr) => {
             if (index === 0) {
                 let diffx = loc.x - arr[1].x
                 let diffy = loc.y - arr[1].y
@@ -352,4 +360,4 @@ function buildMap() {
     return map
 }
 
-export { buildMap, drawMap, gridDimensions, addUnit, setPlacingSprite, getPlacingSprite, getUnits, getUnit, getCamera, setPotentialMoves, clearPotentialMoves, getPotentialMoves }
+export { buildMap, drawMap, gridDimensions, addUnit, setPlacingSprite, getPlacingSprite, getUnits, getUnit, getCamera, setPotentialMoves, clearPotentialMoves, getPathMoves, clearPathMoves, getPotentialMoves }

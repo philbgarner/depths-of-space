@@ -18,6 +18,8 @@
     { "name": "mars-lookout", "image": null, "filename": "./images/mars-lookout.png"},
 
     { "name": "star-icon", "image": null, "filename": "./images/star.png"},
+    { "name": "action-star-full", "image": null, "filename": "./images/ActionStarFull.png"},
+    { "name": "action-star-empty", "image": null, "filename": "./images/ActionStarEmpty.png"},
 
     { "name": "ui-frame-teal", "image": null, "filename": "./images/ui-frame-teal.png"},
     { "name": "ui-button-teal", "image": null, "filename": "./images/ui-button-teal.png"},

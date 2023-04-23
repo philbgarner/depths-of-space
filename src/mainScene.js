@@ -1,5 +1,5 @@
 import { drawImage, getContext, getImage } from "./images.js"
-import { getCamera, drawMap, getUnit, getUnits, setPlacingSprite, getPlacingSprite, gridDimensions, setPotentialMoves, clearPotentialMoves, getPotentialMoves } from "./map.js"
+import { getCamera, drawMap, getUnit, getUnits, setPlacingSprite, getPlacingSprite, gridDimensions, setPotentialMoves, clearPotentialMoves, getPotentialMoves, getPathMoves, clearPathMoves } from "./map.js"
 import { currentPhase, currentTeam, nextPhase, nextTeam } from "./teams.js"
 import { getPointer, gameMap } from "./main.js"
 
@@ -10,6 +10,8 @@ let ctx = null
 let tooltip = ''
 
 let currentUnit = null
+
+let isMoving = false
 
 function getCurrentUnit() {
     return currentUnit
@@ -32,6 +34,23 @@ function drawFrame(delta) {
     drawMap(delta)
 
     drawUI(delta)
+}
+
+async function startMove(moves) {
+    isMoving = true
+    function prom(unit, loc) {
+        return new Promise((resolve, reject) => {
+            console.log('start', loc.x * gridDimensions().x - 12, loc.y * gridDimensions().y - 20)
+            unit.sprite.moveTo(loc.x * gridDimensions().x - 12, loc.y * gridDimensions().y - 20, 0.3).then(() => {
+                console.log('end', loc.x * gridDimensions().x - 12, loc.y * gridDimensions().y - 20)
+                resolve()
+            })
+        })
+    }
+    for (let m in moves) {
+        await prom(currentUnit, moves[m])
+    }
+    isMoving = false
 }
 
 function handleAction() {
@@ -87,16 +106,23 @@ function drawUI(delta) {
                     delay(300).then(() => handleAction())
                 }
             } else if (currentPhase() === 'movement') {
-                if (bg.Clicked() && currentUnit === null) {
+                if (bg.Clicked() && currentUnit === null && !isMoving) {
                     let unit = getUnit(cellx, celly)
                     if (unit) {
                         currentUnit = unit
+                        getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
                         setPotentialMoves(unit, cellx, celly)
                     }
-                } else if (bg.Clicked() && currentUnit) {
-                    currentUnit = null
+                } else if (bg.Clicked() && currentUnit && !isMoving) {
+                    let moves = JSON.parse(JSON.stringify(getPathMoves())).reverse().slice(1)
                     clearPotentialMoves()
-                } else if (bg.Hover() && currentUnit) {
+                    startMove(moves).then(() => {
+                        currentUnit.x = getPathMoves()[0].x
+                        currentUnit.y = getPathMoves()[0].y
+                        currentUnit = null
+                        clearPathMoves()
+                    })
+                } else if (bg.Hover() && currentUnit && !isMoving) {
                     setPotentialMoves(currentUnit, cellx, celly)
                 }
             }
