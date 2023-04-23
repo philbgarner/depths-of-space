@@ -1,5 +1,5 @@
-import { getContext, getImage } from "./images.js"
-import { getCamera, drawMap, getUnit, getUnits, setPlacingSprite, getPlacingSprite, gridDimensions, setPotentialMoves } from "./map.js"
+import { drawImage, getContext, getImage } from "./images.js"
+import { getCamera, drawMap, getUnit, getUnits, setPlacingSprite, getPlacingSprite, gridDimensions, setPotentialMoves, clearPotentialMoves, getPotentialMoves } from "./map.js"
 import { currentPhase, currentTeam, nextPhase, nextTeam } from "./teams.js"
 import { getPointer, gameMap } from "./main.js"
 
@@ -91,10 +91,13 @@ function drawUI(delta) {
                     let unit = getUnit(cellx, celly)
                     if (unit) {
                         currentUnit = unit
-                        setPotentialMoves(unit)
+                        setPotentialMoves(unit, cellx, celly)
                     }
-                } else {
+                } else if (bg.Clicked() && currentUnit) {
                     currentUnit = null
+                    clearPotentialMoves()
+                } else if (bg.Hover() && currentUnit) {
+                    setPotentialMoves(currentUnit, cellx, celly)
                 }
             }
 

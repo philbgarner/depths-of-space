@@ -18,6 +18,7 @@ var startAreaHeight = 24
 var placingSprite = null
 
 var movementTiles = []
+var movementPath = []
 
 var units = []
 
@@ -34,8 +35,13 @@ var camera = {
     targetElapsed: 0
 }
 
-function setPotentialMoves(unit) {
+function getPotentialMoves() {
+    return movementPath
+}
+
+function setPotentialMoves(unit, destX, destY) {
     movementTiles = []
+    movementPath = []
     
     function handleMove(tx, ty, tiles, dist) {
         dist = parseFloat(dist)
@@ -52,6 +58,95 @@ function setPotentialMoves(unit) {
         }
     }
     handleMove(unit.x, unit.y, movementTiles, unit.character.Speed())
+
+    function manhattanDistance(q, toX, toY) {
+        return Math.abs (q.x - toX) + Math.abs (q.y -
+            toY)
+    }
+
+    function getSuccessor(q, dx, dy, toX, toY) {
+        let s = { x: q.x + dx, y: q.y + dy, parent: q, g: q.g + manhattanDistance(q, q.x + dx, q.y + dy), h: manhattanDistance({ x: q.x + dx, y: q.y + dy }, toX, toY)}
+        s.f = s.g + s.h
+        return s
+    }
+
+    function astar(tiles, startX, startY, toX, toY, mv) {
+        if (!tiles) {
+            return []
+        }
+        if (startX === toX && startY === toY) {
+            return []
+        }
+        if (tiles.filter(f => f[0] === toX && f[1] === toY).length === 0) {
+            return []
+        }
+
+        let open = []
+        let closed = []
+        open.push({ x: startX, y: startY, parent: null, g: 0, h: 0, f: 0 })
+        while (open.length > 0) {
+            let q = open.sort((a, b) => a.f - b.f)[0]
+            
+            open = open.filter(f => f.x !== q.x && f.y !== q.y)
+
+            let successors = []
+            
+            if (tiles.filter(f => f[0] === q.x + 1 && f[1] === q.y).length > 0) {
+                successors.push(getSuccessor(q, 1, 0, toX, toY))
+            }
+            if (tiles.filter(f => f[0] === q.x - 1 && f[1] === q.y).length > 0) {
+                successors.push(getSuccessor(q, -1, 0, toX, toY))
+            }    
+            if (tiles.filter(f => f[0] === q.x && f[1] === q.y + 1).length > 0) {
+                successors.push(getSuccessor(q, 0, 1, toX, toY))
+            }
+            if (tiles.filter(f => f[0] === q.x && f[1] === q.y - 1).length > 0) {
+                successors.push(getSuccessor(q, 0, -1, toX, toY))
+            }
+            for (let index in successors) {
+                let s = successors[index]
+                s.f = s.g + s.h
+                if (s.x === toX && s.y === toY) {
+                    // Goal
+                    let curr = s
+                    let path = []
+                    while (curr !== null) {
+                        path.push(curr)
+                        curr = curr.parent
+                    }
+                    if (path.length > mv + 1) {
+                        return []
+                    }
+                    return path
+                }
+                
+                let closedNode = closed.filter(f => f.x === s.x && f.y === s.y && f.f > s.f)
+                if (closedNode.length === 0) {
+                    open.push(s)
+                }
+            }
+            closed.push(q)
+            if (closed.length > tiles.length) {
+                // console.error('Error: More closed tiles than possible tiles in the list. Dumping current path.')
+                let curr = q
+                let path = []
+                while (curr !== null) {
+                    curr.f = q.g + manhattanDistance(curr, toX, toY)
+                    path.push(curr)
+                    curr = curr.parent
+                }
+                return path
+            }
+        }
+        return open
+    }
+
+    movementPath = astar(movementTiles, unit.x, unit.y, destX, destY, unit.character.Speed())
+    console.log('movementPath', movementPath)
+}
+
+function clearPotentialMoves() {
+    movementTiles = []
 }
 
 function BezierBlend(t)
@@ -154,6 +249,17 @@ function drawMap(delta) {
         ctx.globalAlpha = ga
     }
 
+    movementTiles.forEach(t => drawImage('grid-green', t[0] * gridDimensions().x, t[1] * gridDimensions().y))
+   
+    if (getPotentialMoves().length > 0) {
+        getPotentialMoves().forEach(loc => {
+            drawImage('grid-selected', loc.x * gridDimensions().x, loc.y * gridDimensions().y)
+        })
+    }
+
+    // Highlighted mouse cell.
+    drawImage('grid-selected', cellx * gridDimensions().x, celly * gridDimensions().y)
+
     if (placingSprite) {
         placingSprite.x = cellx * gridDimensions().x - 12
         placingSprite.y = celly * gridDimensions().y - 20
@@ -162,8 +268,6 @@ function drawMap(delta) {
         bfontjs.DrawText(getContext(), placingSprite.x + 12, placingSprite.y + 44, placingSprite.actor.name, '#000000cc', font)
         bfontjs.DrawText(getContext(), placingSprite.x + 12, placingSprite.y + 43, placingSprite.actor.name, '#f1f1f1ff', font)
     }
-
-    movementTiles.forEach(t => drawImage('grid-green', t[0] * gridDimensions().x, t[1] * gridDimensions().y))
 
     getTeams().forEach(team => {
         let units = getUnits(team.name).filter(f => f.placed)
@@ -179,9 +283,6 @@ function drawMap(delta) {
             bfontjs.DrawText(getContext(), units[u].sprite.x + 12, units[u].sprite.y + 43, units[u].name, colr, font)
         }
     })
-
-    // Highlighted mouse cell.
-    drawImage('grid-selected', cellx * gridDimensions().x, celly * gridDimensions().y)
 
     ctx.restore()
 
@@ -237,4 +338,4 @@ function buildMap() {
     return map
 }
 
-export { buildMap, drawMap, gridDimensions, addUnit, setPlacingSprite, getPlacingSprite, getUnits, getUnit, getCamera, setPotentialMoves }
+export { buildMap, drawMap, gridDimensions, addUnit, setPlacingSprite, getPlacingSprite, getUnits, getUnit, getCamera, setPotentialMoves, clearPotentialMoves, getPotentialMoves }
