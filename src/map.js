@@ -142,7 +142,6 @@ function setPotentialMoves(unit, destX, destY) {
     }
 
     movementPath = astar(movementTiles, unit.x, unit.y, destX, destY, unit.character.Speed())
-    console.log('movementPath', movementPath)
 }
 
 function clearPotentialMoves() {
@@ -252,8 +251,23 @@ function drawMap(delta) {
     movementTiles.forEach(t => drawImage('grid-green', t[0] * gridDimensions().x, t[1] * gridDimensions().y))
    
     if (getPotentialMoves().length > 0) {
-        getPotentialMoves().forEach(loc => {
-            drawImage('grid-movement-node', loc.x * gridDimensions().x, loc.y * gridDimensions().y)
+        getPotentialMoves().forEach((loc, index, arr) => {
+            if (index === 0) {
+                let diffx = loc.x - arr[1].x
+                let diffy = loc.y - arr[1].y
+                let imgid = 'grid-movement-right'
+                if (diffx < 0) {
+                    imgid = 'grid-movement-left'
+                }
+                if (diffy < 0) {
+                    imgid = 'grid-movement-up'
+                } else if (diffy > 0) {
+                    imgid = 'grid-movement-down'
+                }
+                drawImage(imgid, loc.x * gridDimensions().x, loc.y * gridDimensions().y)
+            } else {
+                drawImage('grid-movement-node', loc.x * gridDimensions().x, loc.y * gridDimensions().y)
+            }
         })
     }
 
