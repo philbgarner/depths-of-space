@@ -264,8 +264,10 @@ function drawMap(delta) {
                 let diffx = loc.x - arr[1].x
                 let diffy = loc.y - arr[1].y
                 let imgid = 'grid-movement-right'
+                getCurrentUnit().sprite.flipped = false
                 if (diffx < 0) {
                     imgid = 'grid-movement-left'
+                    getCurrentUnit().sprite.flipped = true
                 }
                 if (diffy < 0) {
                     imgid = 'grid-movement-up'
