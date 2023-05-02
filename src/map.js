@@ -303,6 +303,13 @@ function drawMap(delta) {
                 drawImage('unit-selected', units[u].x * gridDimensions().x, units[u].y * gridDimensions().y)
             }
             units[u].sprite.draw()
+            for (let ap = 0; ap < units[u].actionPointsPerTurn; ap++) {
+                if (ap <= units[u].actionPoints - 1) {
+                    drawImage('action-star-full', units[u].sprite.x - 1, units[u].sprite.y + 41 - ap * 11)
+                } else {
+                    drawImage('action-star-empty', units[u].sprite.x  - 1, units[u].sprite.y + 41 - ap * 11)
+                }
+            }
             bfontjs.DrawText(getContext(), units[u].sprite.x + 12, units[u].sprite.y + 44, units[u].name, '#000000cc', font)
             bfontjs.DrawText(getContext(), units[u].sprite.x + 12, units[u].sprite.y + 43, units[u].name, colr, font)
         }

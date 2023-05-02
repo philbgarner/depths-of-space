@@ -14,6 +14,8 @@
     { "name": "player-hurt", "image": null, "filename": "./images/anims/Player Hurt 48x48.png" },
     { "name": "player-idle", "image": null, "filename": "./images/anims/Character Idle 48x48.png" },
 
+    { "name": "player-trooper-idle", "image": null, "filename": "./images/anims/Character Trooper.png" },
+
     { "name": "mars-scape", "image": null, "filename": "./images/Mars-Scape.png"},
     { "name": "mars-lookout", "image": null, "filename": "./images/mars-lookout.png"},
 

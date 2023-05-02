@@ -9,7 +9,7 @@
 
     "player": {
         "default": "idle",
-        "idle": { "repeat": true, "imageName": "player-idle", "frameDelay": 100,
+        "idle": { "repeat": true, "imageName": "player-trooper-idle", "frameDelay": 100,
             "frames": [
                 { "x": 0, "y": 0, "w": 48, "h": 48 },
                 { "x": 48, "y": 0, "w": 48, "h": 48 },

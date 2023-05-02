@@ -113,18 +113,23 @@ function drawUI(delta) {
                         getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
                         setPotentialMoves(unit, cellx, celly)
                     }
-                } else if (bg.Clicked() && currentUnit && !isMoving) {
+                } else if (bg.Clicked() && currentUnit && currentUnit.actionPoints > 0 && !isMoving && currentUnit.actionPoints > 0) {
                     let moves = JSON.parse(JSON.stringify(getPathMoves())).reverse().slice(1)
                     clearPotentialMoves()
                     startMove(moves).then(() => {
                         currentUnit.x = getPathMoves()[0].x
                         currentUnit.y = getPathMoves()[0].y
+                        currentUnit.actionPoints--
                         currentUnit = null
                         clearPathMoves()
                     })
                 } else if (bg.Hover() && currentUnit && !isMoving) {
                     setPotentialMoves(currentUnit, cellx, celly)
                 }
+            }
+
+            if (currentPhase() === 'Movement' && currentUnit) {
+                tooltip = `${unit.name} Action Points: ${unit.actionPoints} (${cellx}, ${celly}).`
             }
 
             let phase = currentPhase().slice(0, 1).toUpperCase() + currentPhase().slice(1)

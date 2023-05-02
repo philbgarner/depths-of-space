@@ -4,6 +4,8 @@ import { getContext } from "./images.js"
 
 class Actor {
     constructor(params) {
+        this.actionPoints = 2
+        this.actionPointsPerTurn = 2
         this.team = params.team
         this.name = params.name
         this.character = params.character
