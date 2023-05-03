@@ -108,12 +108,12 @@ function drawUI(delta) {
             } else if (currentPhase() === 'movement') {
                 if (bg.Clicked() && currentUnit === null && !isMoving) {
                     let unit = getUnit(cellx, celly)
-                    if (unit) {
+                    if (unit && unit.actionPoints > 0) {
                         currentUnit = unit
                         getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
                         setPotentialMoves(unit, cellx, celly)
                     }
-                } else if (bg.Clicked() && currentUnit && currentUnit.actionPoints > 0 && !isMoving && currentUnit.actionPoints > 0) {
+                } else if (bg.Clicked() && currentUnit && !isMoving && currentUnit.actionPoints > 0) {
                     let moves = JSON.parse(JSON.stringify(getPathMoves())).reverse().slice(1)
                     clearPotentialMoves()
                     startMove(moves).then(() => {

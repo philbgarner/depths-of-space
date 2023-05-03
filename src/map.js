@@ -1,5 +1,5 @@
 import Actor from "./actor.js"
-import { getContext, drawImage } from "./images.js"
+import { getContext, drawImage, getImage } from "./images.js"
 import { currentPhase, getTeam, getTeams } from "./teams.js"
 import { getPointer } from "./main.js"
 import { getCurrentUnit } from "./mainScene.js"
@@ -204,6 +204,7 @@ function addUnit(teamName, unit, flipped) {
     if (flipped) {
         actor.sprite.flipped = flipped
     }
+    actor.character.data.hp = 2
     units.push(actor)
     return actor
 }
@@ -310,6 +311,19 @@ function drawMap(delta) {
                     drawImage('action-star-empty', units[u].sprite.x  - 1, units[u].sprite.y + 41 - ap * 11)
                 }
             }
+            //drawImage("ui-max-healthbar", units[u].sprite.x + 12, units[u].sprite.y + 44)
+
+            let maxBarWidth = 46
+
+            getContext().drawImage(getImage('ui-max-healthbar'), 0, 0, 10, 8, units[u].sprite.x + 12, units[u].sprite.y + 45, maxBarWidth - 4, 8)
+            getContext().drawImage(getImage('ui-max-healthbar'), 11, 0, 4, 8, units[u].sprite.x + 12 + maxBarWidth - 4, units[u].sprite.y + 45, 4, 8)
+
+            if (units[u].character.Hp) {
+                let hpWidth = parseInt((units[u].character.Hp() / units[u].character.MaxHp()) * maxBarWidth)
+                getContext().drawImage(getImage('ui-healthbar'), 0, 0, 10, 8, units[u].sprite.x + 11, units[u].sprite.y + 43, hpWidth - 4, 8)
+                getContext().drawImage(getImage('ui-healthbar'), 11, 0, 4, 8, units[u].sprite.x + 11 + hpWidth - 4, units[u].sprite.y + 43, 4, 8)
+            }
+
             bfontjs.DrawText(getContext(), units[u].sprite.x + 12, units[u].sprite.y + 44, units[u].name, '#000000cc', font)
             bfontjs.DrawText(getContext(), units[u].sprite.x + 12, units[u].sprite.y + 43, units[u].name, colr, font)
         }

@@ -23,6 +23,8 @@
     { "name": "action-star-full", "image": null, "filename": "./images/ActionStarFull.png"},
     { "name": "action-star-empty", "image": null, "filename": "./images/ActionStarEmpty.png"},
 
+    { "name": "ui-max-healthbar", "image": null, "filename": "./images/ui-max-healthbar.png"},
+    { "name": "ui-healthbar", "image": null, "filename": "./images/ui-healthbar.png"},
     { "name": "ui-frame-teal", "image": null, "filename": "./images/ui-frame-teal.png"},
     { "name": "ui-button-teal", "image": null, "filename": "./images/ui-button-teal.png"},
     { "name": "ui-button-teal-down", "image": null, "filename": "./images/ui-button-teal-down.png"},

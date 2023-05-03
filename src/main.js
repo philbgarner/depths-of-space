@@ -9,7 +9,8 @@ import { drawFrame as drawMainMenu, StartMenu } from './menuScene.js'
 import { set, setDictionary } from './grammar.js'
 import input from './input.js'
 import { addTeam, currentTeam } from './teams.js'
-import { addUnit, gridDimensions } from './map.js'
+import { addUnit, getUnits, gridDimensions } from './map.js'
+import { Character } from './character.js'
 
 var dateNow = Date.now()
 var dateThen = Date.now()
@@ -93,9 +94,12 @@ async function Start(squad, map) {
     addTeam('Team Alpha', '2d10')
     addTeam('Team Bravo', '1d1')
     
+    let bSquad = JSON.parse(JSON.stringify(squad))
+
     for (let s in squad) {
         addUnit('Team Alpha', squad[s], false)
-        addUnit('Team Bravo', JSON.parse(JSON.stringify(squad[s])), true)
+        bSquad[s] = new Character(bSquad[s].name)
+        addUnit('Team Bravo', bSquad[s], true)
     }
 
     setTargetFrameRate(60)
