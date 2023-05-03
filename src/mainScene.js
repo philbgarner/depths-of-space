@@ -1,5 +1,7 @@
+import input from "./input.js"
 import { drawImage, getContext, getImage } from "./images.js"
-import { getCamera, drawMap, getUnit, getUnits, setPlacingSprite, getPlacingSprite, gridDimensions, setPotentialMoves, clearPotentialMoves, getPotentialMoves, getPathMoves, clearPathMoves } from "./map.js"
+import { getCamera, drawMap, getUnit, getUnits, setPlacingSprite, getPlacingSprite, gridDimensions,
+    setPotentialMoves, clearPotentialMoves, getPotentialMoves, getPathMoves, clearPathMoves } from "./map.js"
 import { currentPhase, currentTeam, nextPhase, nextTeam } from "./teams.js"
 import { getPointer, gameMap } from "./main.js"
 
@@ -40,9 +42,7 @@ async function startMove(moves) {
     isMoving = true
     function prom(unit, loc) {
         return new Promise((resolve, reject) => {
-            console.log('start', loc.x * gridDimensions().x - 12, loc.y * gridDimensions().y - 20)
             unit.sprite.moveTo(loc.x * gridDimensions().x - 12, loc.y * gridDimensions().y - 20, 0.3).then(() => {
-                console.log('end', loc.x * gridDimensions().x - 12, loc.y * gridDimensions().y - 20)
                 resolve()
             })
         })
@@ -71,6 +71,21 @@ function handleAction() {
 }
 
 function StartScene() {
+    input.listen()
+
+    input.released('moveDown', () => {
+        getCamera().setTarget(getCamera().x, getCamera().y + 48, 320)
+    })
+    input.released('moveUp', () => {
+        getCamera().setTarget(getCamera().x, getCamera().y - 48, 320)
+    })
+    input.released('moveRight', () => {
+        getCamera().setTarget(getCamera().x + 48, getCamera().y, 320)
+    })
+    input.released('moveLeft', () => {
+        getCamera().setTarget(getCamera().x - 48, getCamera().y, 320)
+    })
+    
     handleAction()
 }
 
@@ -108,17 +123,18 @@ function drawUI(delta) {
             } else if (currentPhase() === 'movement') {
                 if (bg.Clicked() && currentUnit === null && !isMoving) {
                     let unit = getUnit(cellx, celly)
-                    if (unit && unit.actionPoints > 0) {
+                    if (unit && !unit.moved) {
                         currentUnit = unit
                         getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
                         setPotentialMoves(unit, cellx, celly)
                     }
-                } else if (bg.Clicked() && currentUnit && !isMoving && currentUnit.actionPoints > 0) {
+                } else if (bg.Clicked() && currentUnit && !isMoving && !currentUnit.moved) {
                     let moves = JSON.parse(JSON.stringify(getPathMoves())).reverse().slice(1)
                     clearPotentialMoves()
                     startMove(moves).then(() => {
                         currentUnit.x = getPathMoves()[0].x
                         currentUnit.y = getPathMoves()[0].y
+                        currentUnit.moved = true
                         currentUnit.actionPoints--
                         currentUnit = null
                         clearPathMoves()
@@ -126,10 +142,72 @@ function drawUI(delta) {
                 } else if (bg.Hover() && currentUnit && !isMoving) {
                     setPotentialMoves(currentUnit, cellx, celly)
                 }
+
+                if (getUnits().filter(f => !f.moved).length === 0) {
+                    currentUnit = null
+                    nextPhase()
+                    nextTeam()
+                    let home = currentTeam().homePosition
+                    getCamera().setTarget(home.x, home.y, 1500)        
+                } else if (getUnits(currentTeam().name).filter(f => !f.moved).length === 0) {
+                    currentUnit = null
+                    nextTeam()
+                    let home = currentTeam().homePosition
+                    getCamera().setTarget(home.x, home.y, 1500)        
+                }
+            } else if (currentPhase() === 'active') {
+                // getUnits(currentTeam().name).forEach((u, index) => {
+                //     u.moved = false
+                //     u.actionPoints = u.actionPointsPerTurn
+                //     if (index === 0) {
+                //         getCamera().setTarget(u.x * gridDimensions().x - 160, u.y * gridDimensions().y - 100, 1500)        
+                //     }
+                // })  
+                let paramsGreyListImage = {
+                    bgcolor: '#122020ff',
+                    color: '#cacacaff',
+                    bgcolorSelected: '#122020ff',
+                    colorSelected: '#f1f1f1ff',
+                    highlight: '#f1f1f1ff',
+                    scrollbarWidth: 9,
+                    scrollAreaImage: {
+                        image: getImage('ui-button-scroll-area'),
+                        hover: getImage('ui-button-scroll-area'),
+                        pressed: getImage('ui-button-scroll-area'),
+                        innerRect: { x: 3, y: 4, w: 7, h: 40 }
+                    },
+                    caratImage: {
+                        image: getImage('ui-button-carat'),
+                        hover: getImage('ui-button-carat-hover'),
+                        pressed: getImage('ui-button-carat-pressed')
+                    },
+                    upImage: {
+                        image: getImage('ui-button-scroll-up'),
+                        hover: getImage('ui-button-scroll-up-hover'),
+                        pressed: getImage('ui-button-scroll-up-pressed')
+                    },
+                    downImage: {
+                        image: getImage('ui-button-scroll-down'),
+                        hover: getImage('ui-button-scroll-down-hover'),
+                        pressed: getImage('ui-button-scroll-down-pressed')
+                    }
+                }
+
+                if (bg.Clicked() && currentUnit === null) {
+                    let unit = getUnit(cellx, celly)
+                    if (unit && !unit.moved) {
+                        currentUnit = unit
+                        getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
+                        setPotentialMoves(unit, cellx, celly)
+                    }
+                }
+            
+                tooltip = 'Active phase.'
+                let elActions = ui.Element({ id: 'actionsList', type: 'ListImage', list: ['Throw Object >', 'Reload', 'Abilities >'], rect: {x: 8, y: 19, w: 55, h: 32 }, ...paramsGreyListImage})
             }
 
-            if (currentPhase() === 'Movement' && currentUnit) {
-                tooltip = `${unit.name} Action Points: ${unit.actionPoints} (${cellx}, ${celly}).`
+            if (currentPhase() === 'movement' && currentUnit) {
+                tooltip = `${currentUnit.name} Action Points: ${currentUnit.actionPoints} (${cellx}, ${celly}).`
             }
 
             let phase = currentPhase().slice(0, 1).toUpperCase() + currentPhase().slice(1)

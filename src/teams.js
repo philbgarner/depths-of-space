@@ -1,5 +1,5 @@
 import { roll } from './grammar.js'
-import { gridDimensions } from './map.js'
+import { getCamera, getUnits, gridDimensions } from './map.js'
 
 var teams = []
 var teamIndex = 0

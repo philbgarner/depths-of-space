@@ -120,40 +120,40 @@ function ChangeMenu(id) {
 // }
 
 function StartMenu(id) {
-    input.listen()
+    // input.listen()
 
-    input.released('moveDown', () => {
-        menu = GetMenu(currentMenuId)
-        menuItems = GetMenuItems(currentMenuId) //menu.Options.filter(f => f.onSelect)
-        menuItem = menuItems.filter(f => f.text === currentMenuItem)[0]
-        let index = menuItems.findIndex(f => f.text === currentMenuItem)
-        index++
-        if (index >= menuItems.length) {
-            index = 0
-        }
-        currentMenuItem = menuItems[index].text
-    })
-    input.released('moveUp', () => {
-        menu = GetMenu(currentMenuId)
-        menuItems = GetMenuItems(currentMenuId)//menu.Options.filter(f => f.onSelect)
-        menuItem = menuItems.filter(f => f.text === currentMenuItem)[0]
-        let index = menuItems.findIndex(f => f.text === currentMenuItem)
-        index--
-        if (index < 0) {
-            index = menuItems.length - 1
-        }
-        currentMenuItem = menuItems[index].text
-    })
-    input.released('attack', () => {
-        menu = GetMenu(currentMenuId)
-        menuItems = GetMenuItems(currentMenuId) //menu.Options.filter(f => f.onSelect)
-        try {
-            menuItem = menuItems.filter(f => f.text === currentMenuItem)[0]    
-            if (menuItem.onSelect) {
-                Action(menuItem.onSelect)(menuItem.text)
-            }
-        } catch {}
-    })
+    // input.released('moveDown', () => {
+    //     menu = GetMenu(currentMenuId)
+    //     menuItems = GetMenuItems(currentMenuId) //menu.Options.filter(f => f.onSelect)
+    //     menuItem = menuItems.filter(f => f.text === currentMenuItem)[0]
+    //     let index = menuItems.findIndex(f => f.text === currentMenuItem)
+    //     index++
+    //     if (index >= menuItems.length) {
+    //         index = 0
+    //     }
+    //     currentMenuItem = menuItems[index].text
+    // })
+    // input.released('moveUp', () => {
+    //     menu = GetMenu(currentMenuId)
+    //     menuItems = GetMenuItems(currentMenuId)//menu.Options.filter(f => f.onSelect)
+    //     menuItem = menuItems.filter(f => f.text === currentMenuItem)[0]
+    //     let index = menuItems.findIndex(f => f.text === currentMenuItem)
+    //     index--
+    //     if (index < 0) {
+    //         index = menuItems.length - 1
+    //     }
+    //     currentMenuItem = menuItems[index].text
+    // })
+    // input.released('attack', () => {
+    //     menu = GetMenu(currentMenuId)
+    //     menuItems = GetMenuItems(currentMenuId) //menu.Options.filter(f => f.onSelect)
+    //     try {
+    //         menuItem = menuItems.filter(f => f.text === currentMenuItem)[0]    
+    //         if (menuItem.onSelect) {
+    //             Action(menuItem.onSelect)(menuItem.text)
+    //         }
+    //     } catch {}
+    // })
 }
 
 function drawFrame(delta) {
