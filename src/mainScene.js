@@ -74,16 +74,29 @@ function StartScene() {
     input.listen()
 
     input.released('moveDown', () => {
-        getCamera().setTarget(getCamera().x, getCamera().y + 48, 320)
+        if (!getCamera().isMoving()) getCamera().setTarget(getCamera().x, getCamera().y + 48, 320)
     })
     input.released('moveUp', () => {
-        getCamera().setTarget(getCamera().x, getCamera().y - 48, 320)
+        if (!getCamera().isMoving()) getCamera().setTarget(getCamera().x, getCamera().y - 48, 320)
     })
     input.released('moveRight', () => {
-        getCamera().setTarget(getCamera().x + 48, getCamera().y, 320)
+        if (!getCamera().isMoving()) getCamera().setTarget(getCamera().x + 48, getCamera().y, 320)
     })
     input.released('moveLeft', () => {
-        getCamera().setTarget(getCamera().x - 48, getCamera().y, 320)
+        if (!getCamera().isMoving()) getCamera().setTarget(getCamera().x - 48, getCamera().y, 320)
+    })
+
+    input.pressed('moveDown', () => {
+        if (!getCamera().isMoving()) getCamera().setTarget(getCamera().x, getCamera().y + 96, 6)
+    })
+    input.pressed('moveUp', () => {
+        if (!getCamera().isMoving()) getCamera().setTarget(getCamera().x, getCamera().y - 96, 6)
+    })
+    input.pressed('moveRight', () => {
+        if (!getCamera().isMoving()) getCamera().setTarget(getCamera().x + 96, getCamera().y, 6)
+    })
+    input.pressed('moveLeft', () => {
+        if (!getCamera().isMoving()) getCamera().setTarget(getCamera().x - 96, getCamera().y, 6)
     })
     
     handleAction()
@@ -98,6 +111,13 @@ function drawUI(delta) {
             let cellx = parseInt((getPointer().x + getCamera().x) / gridDimensions().x)
             let celly = parseInt((getPointer().y + getCamera().y) / gridDimensions().y)
             let bg = ui.Element({ id: 'lblBg', text: ``, rect: { x: 0, y: 0, w: 320, h: 200 }, color: '#f1f100ff', color: '#f1f100ff', bgcolor: '#00000000'})
+            
+            if (bg.Clicked() && bg.state.mouseButton === 2) {
+                currentUnit = null
+                clearPathMoves()
+                clearPotentialMoves()
+            }
+            
             if (currentPhase() === 'positioning') {
                 if (bg.Hover() && currentUnit) {
                     if (gameMap.hasTeamATile(cellx, celly)) {
@@ -147,8 +167,11 @@ function drawUI(delta) {
                     currentUnit = null
                     nextPhase()
                     nextTeam()
-                    let home = currentTeam().homePosition
-                    getCamera().setTarget(home.x, home.y, 1500)        
+                    let teamUnits = getUnits(currentTeam().name)
+                    teamUnits.forEach(u => u.moved = false)
+                    if (teamUnits.length > 0) {
+                        getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000)
+                    }
                 } else if (getUnits(currentTeam().name).filter(f => !f.moved).length === 0) {
                     currentUnit = null
                     nextTeam()
@@ -156,13 +179,6 @@ function drawUI(delta) {
                     getCamera().setTarget(home.x, home.y, 1500)        
                 }
             } else if (currentPhase() === 'active') {
-                // getUnits(currentTeam().name).forEach((u, index) => {
-                //     u.moved = false
-                //     u.actionPoints = u.actionPointsPerTurn
-                //     if (index === 0) {
-                //         getCamera().setTarget(u.x * gridDimensions().x - 160, u.y * gridDimensions().y - 100, 1500)        
-                //     }
-                // })  
                 let paramsGreyListImage = {
                     bgcolor: '#122020ff',
                     color: '#cacacaff',
@@ -193,17 +209,38 @@ function drawUI(delta) {
                     }
                 }
 
-                if (bg.Clicked() && currentUnit === null) {
+                // if (bg.Clicked() && currentUnit === null) {
+                //     let unit = getUnit(cellx, celly)
+                //     if (unit && !unit.moved) {
+                //         currentUnit = unit
+                //         getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
+                //     }
+                // }
+            
+                tooltip = 'Active phase.'
+                if (currentUnit) {
+                    let elActions = ui.Element({ id: 'actionsList', type: 'ListImage', list: ['Throw Object >', 'Reload', 'Abilities >', 'Done'], rect: {x: 8, y: 19, w: 96, h: 32 }, ...paramsGreyListImage})
+                    if (elActions.Clicked()) {
+                        let action = elActions.list[elActions.currentItem]
+                        if (action === 'Done') {
+                            currentUnit = null
+                            clearPathMoves()
+                            clearPotentialMoves()
+                            nextTeam()
+                            let teamUnits = getUnits(currentTeam().name)
+                            teamUnits.forEach(u => u.moved = false)
+                            if (teamUnits.length > 0) {
+                                getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000)
+                            }
+                        }
+                    }
+                } else if (bg.Clicked() && currentUnit === null) {
                     let unit = getUnit(cellx, celly)
                     if (unit && !unit.moved) {
                         currentUnit = unit
                         getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
-                        setPotentialMoves(unit, cellx, celly)
                     }
                 }
-            
-                tooltip = 'Active phase.'
-                let elActions = ui.Element({ id: 'actionsList', type: 'ListImage', list: ['Throw Object >', 'Reload', 'Abilities >'], rect: {x: 8, y: 19, w: 55, h: 32 }, ...paramsGreyListImage})
             }
 
             if (currentPhase() === 'movement' && currentUnit) {

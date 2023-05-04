@@ -4,12 +4,15 @@ var listening = false
 
 function handlerPressed (button) {
   setState(button, true)
+  if (pressCallbacks[button]) {
+    releaseCallbacks[button](button)
+  }
 }
 
 function handlerReleased (button) {
   setState(button, false)
-  if (callbacks[button]) {
-    callbacks[button](button)
+  if (releaseCallbacks[button]) {
+    releaseCallbacks[button](button)
   }
 }
 
@@ -24,7 +27,8 @@ function GetInputValue(inputType, key) {
 }
 
 var inputState = {}
-var callbacks = {}
+var releaseCallbacks = {}
+var pressCallbacks = {}
 
 var enabled = [ 'keyboard', 'gamepad' ]
 
@@ -65,7 +69,8 @@ function listenerKeyUp(e) {
 
 function init() {
   inputState = {}
-  callbacks = {}
+  releaseCallbacks = {}
+  pressCallbacks = {}
   if (enabled.includes('keyboard')) {
     window.removeEventListener('keydown', listenerKeyDown)
     window.removeEventListener('keyup', listenerKeyUp)
@@ -97,7 +102,10 @@ var input = {
     listening = false
   },
   released: (button, method) => {
-    callbacks[button] = method
+    releaseCallbacks[button] = method
+  },
+  pressed: (button, method) => {
+    pressCallbacks[button] = method
   }
 }
 

@@ -53,6 +53,10 @@ function setPotentialMoves(unit, destX, destY) {
             return
         }
         let tileList = tiles.filter(f => f.x === tx && f.y === ty)
+        if (units.filter(f => f.x === tx && f.y === ty && f !== unit).length === 1) {
+            console.log(units.filter(f => f.x === tx && f.y === ty), tx, ty)
+            return
+        }
         if (tileList.length === 0) {
             tiles.push([tx, ty])
             handleMove(tx + 1, ty, tiles, dist - 1)
@@ -95,16 +99,16 @@ function setPotentialMoves(unit, destX, destY) {
 
             let successors = []
             
-            if (tiles.filter(f => f[0] === q.x + 1 && f[1] === q.y).length > 0) {
+            if (tiles.filter(f => f[0] === q.x + 1 && f[1] === q.y).length > 0 && units.filter(f => f.x === q.x + 1 && f.y === q.y).length === 0) {
                 successors.push(getSuccessor(q, 1, 0, toX, toY))
             }
-            if (tiles.filter(f => f[0] === q.x - 1 && f[1] === q.y).length > 0) {
+            if (tiles.filter(f => f[0] === q.x - 1 && f[1] === q.y).length > 0 && units.filter(f => f.x === q.x - 1 && f.y === q.y).length === 0) {
                 successors.push(getSuccessor(q, -1, 0, toX, toY))
             }    
-            if (tiles.filter(f => f[0] === q.x && f[1] === q.y + 1).length > 0) {
+            if (tiles.filter(f => f[0] === q.x && f[1] === q.y + 1).length > 0 && units.filter(f => f.x === q.x && f.y === q.y + 1).length === 0) {
                 successors.push(getSuccessor(q, 0, 1, toX, toY))
             }
-            if (tiles.filter(f => f[0] === q.x && f[1] === q.y - 1).length > 0) {
+            if (tiles.filter(f => f[0] === q.x && f[1] === q.y - 1).length > 0 && units.filter(f => f.x === q.x && f.y === q.y - 1).length === 0) {
                 successors.push(getSuccessor(q, 0, -1, toX, toY))
             }
             for (let index in successors) {
@@ -170,6 +174,9 @@ function getCamera() {
             camera.targetY = y
             camera.targetDuration = duration
             camera.targetElapsed = 0
+        },
+        isMoving: () => {
+            return camera.targetDuration > 0
         }
     }
 }
