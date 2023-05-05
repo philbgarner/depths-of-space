@@ -10,7 +10,7 @@ class Actor {
         this.name = params.name
         this.character = params.character
         this.placed = false
-        this.sprite = buildSprite(params.spriteName, params.x ? params.x : 0, params.y ? params.y : 0, 'idle')
+        this.sprite = buildSprite(params.spriteName, params.x ? params.x : 0, params.y ? params.y : 0, 'idle', () => {}, this.character.data.spriteName)
         this.sprite.actor = this
     }
 

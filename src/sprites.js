@@ -21,7 +21,7 @@ function getMsSinceMidnight(d) {
     return d - e.setHours(0,0,0,0)
     }
 
-function buildSprite(name, x, y, pose, onComplete) {
+function buildSprite(name, x, y, pose, onComplete, imageOverride) {
     if (!animations[name]) {
         throw new Error(`Can't build sprite, missing animation definition '${name}'.`)
     }
@@ -46,13 +46,13 @@ function buildSprite(name, x, y, pose, onComplete) {
             let sprPose = anim.default ? anim.default : null
             sprPose = anim[pose] ? anim[pose] : sprPose
             if (sprPose) {
-                let img = getImages().filter(f => f.name === sprPose.imageName)
+                let img = getImages().filter(f => f.name === imageOverride ? imageOverride : sprPose.imageName)
                 if (img.length > 0) {
                     sprite.frames = sprPose.frames
                     sprite.currentFrame = 0
                     sprite.animation = animation
                     sprite.pose = pose
-                    sprite.framesImage = sprPose.imageName
+                    sprite.framesImage = imageOverride ? imageOverride : sprPose.imageName
                     if (sprPose.sfx) {
                         let sfx = getSfx(sprPose.sfx)
                         if (sfx) {
