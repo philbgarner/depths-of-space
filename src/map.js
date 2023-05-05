@@ -54,7 +54,6 @@ function setPotentialMoves(unit, destX, destY) {
         }
         let tileList = tiles.filter(f => f.x === tx && f.y === ty)
         if (units.filter(f => f.x === tx && f.y === ty && f !== unit).length === 1) {
-            console.log(units.filter(f => f.x === tx && f.y === ty), tx, ty)
             return
         }
         if (tileList.length === 0) {
@@ -320,7 +319,7 @@ function drawMap(delta) {
             }
             //drawImage("ui-max-healthbar", units[u].sprite.x + 12, units[u].sprite.y + 44)
 
-            let maxBarWidth = 46
+            let maxBarWidth = bfontjs.CalculateTextWidth(units[u].name, font) + 4 //46
 
             getContext().drawImage(getImage('ui-max-healthbar'), 0, 0, 10, 8, units[u].sprite.x + 12, units[u].sprite.y + 45, maxBarWidth - 4, 8)
             getContext().drawImage(getImage('ui-max-healthbar'), 11, 0, 4, 8, units[u].sprite.x + 12 + maxBarWidth - 4, units[u].sprite.y + 45, 4, 8)

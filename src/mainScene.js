@@ -168,8 +168,9 @@ function drawUI(delta) {
                     nextPhase()
                     nextTeam()
                     let teamUnits = getUnits(currentTeam().name)
-                    teamUnits.forEach(u => u.moved = false)
+                    getUnits().forEach(u => u.moved = false)
                     if (teamUnits.length > 0) {
+                        currentUnit = teamUnits[0]
                         getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000)
                     }
                 } else if (getUnits(currentTeam().name).filter(f => !f.moved).length === 0) {
@@ -209,28 +210,30 @@ function drawUI(delta) {
                     }
                 }
 
-                // if (bg.Clicked() && currentUnit === null) {
-                //     let unit = getUnit(cellx, celly)
-                //     if (unit && !unit.moved) {
-                //         currentUnit = unit
-                //         getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
-                //     }
-                // }
-            
                 tooltip = 'Active phase.'
                 if (currentUnit) {
                     let elActions = ui.Element({ id: 'actionsList', type: 'ListImage', list: ['Throw Object >', 'Reload', 'Abilities >', 'Done'], rect: {x: 8, y: 19, w: 96, h: 32 }, ...paramsGreyListImage})
                     if (elActions.Clicked()) {
                         let action = elActions.list[elActions.currentItem]
                         if (action === 'Done') {
+                            currentUnit.moved = true
                             currentUnit = null
                             clearPathMoves()
                             clearPotentialMoves()
                             nextTeam()
-                            let teamUnits = getUnits(currentTeam().name)
-                            teamUnits.forEach(u => u.moved = false)
+                            let teamUnits = getUnits(currentTeam().name).filter(f => !f.moved)
                             if (teamUnits.length > 0) {
                                 getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000)
+                                currentUnit = teamUnits[0]
+                            } else if (getUnits().filter(f => !f.moved).length === 0) {
+                                currentUnit = null
+                                nextPhase()
+                                getUnits().forEach(u => u.moved = false)
+                                let teamUnits = getUnits(currentTeam().name)
+                                if (teamUnits.length > 0) {
+                                    currentUnit = teamUnits[0]
+                                    getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000)
+                                }
                             }
                         }
                     }
