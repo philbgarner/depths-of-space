@@ -244,6 +244,8 @@ function drawUI(delta) {
                         getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
                     }
                 }
+            } else if (currentPhase() === 'siege') {
+                tooltip = 'Siege phase.'
             }
 
             if (currentPhase() === 'movement' && currentUnit) {
