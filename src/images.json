@@ -15,6 +15,7 @@
     { "name": "player-idle", "image": null, "filename": "./images/anims/Character Idle 48x48.png" },
 
     { "name": "player-trooper-idle", "image": null, "filename": "./images/anims/Character Trooper.png" },
+    { "name": "player-crusader-idle", "image": null, "filename": "./images/anims/Character Crusader.png" },
     { "name": "player-medic-idle", "image": null, "filename": "./images/anims/Character Medic.png" },
 
     { "name": "mars-scape", "image": null, "filename": "./images/Mars-Scape.png"},

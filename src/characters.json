@@ -6,6 +6,6 @@
     { "name": "Technician", "Cost": 2, "equipAbilities": 7, "gunnerySkill": 7, "meleeSkill": 8, "speed": 3, "hp": 14, "spriteName": "player-trooper-idle" },
     { "name": "Medic", "Cost": 4, "equipAbilities": 7, "gunnerySkill": 6, "meleeSkill": 7, "speed": 4, "hp": 20, "spriteName": "player-medic-idle" },
     { "name": "Herald", "Cost": 3, "equipAbilities": 8, "gunnerySkill": 8, "meleeSkill": 6, "speed": 4, "hp": 14, "spriteName": "player-trooper-idle" },
-    { "name": "Crusader", "Cost": 5, "equipAbilities": 7, "gunnerySkill": 6, "meleeSkill": 5, "speed": 5, "hp": 25, "spriteName": "player-trooper-idle" },
+    { "name": "Crusader", "Cost": 5, "equipAbilities": 7, "gunnerySkill": 6, "meleeSkill": 5, "speed": 5, "hp": 25, "spriteName": "player-crusader-idle" },
     { "name": "Bastion", "Cost": 3, "equipAbilities": 5, "gunnerySkill": 6, "meleeSkill": 4, "speed": 3, "hp": 28, "spriteName": "player-trooper-idle" }
 ]

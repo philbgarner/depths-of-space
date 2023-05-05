@@ -271,10 +271,8 @@ function drawMap(delta) {
                 let diffx = loc.x - arr[1].x
                 let diffy = loc.y - arr[1].y
                 let imgid = 'grid-movement-right'
-                getCurrentUnit().sprite.flipped = false
                 if (diffx < 0) {
                     imgid = 'grid-movement-left'
-                    getCurrentUnit().sprite.flipped = true
                 }
                 if (diffy < 0) {
                     imgid = 'grid-movement-up'
@@ -282,7 +280,7 @@ function drawMap(delta) {
                     imgid = 'grid-movement-down'
                 }
                 drawImage(imgid, loc.x * gridDimensions().x, loc.y * gridDimensions().y)
-            } else {
+            } else if (index !== arr.length - 1) {
                 drawImage('grid-movement-node', loc.x * gridDimensions().x, loc.y * gridDimensions().y)
             }
         })

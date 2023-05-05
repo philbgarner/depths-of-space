@@ -248,6 +248,14 @@ function drawUI(delta) {
                 tooltip = 'Siege phase.'
             }
 
+            if (currentUnit) {
+                if (getCurrentUnit().x > getPointer().cellX()) {
+                    getCurrentUnit().sprite.flipped = true
+                } else {
+                    getCurrentUnit().sprite.flipped = false
+                }
+            }
+
             if (currentPhase() === 'movement' && currentUnit) {
                 tooltip = `${currentUnit.name} Action Points: ${currentUnit.actionPoints} (${cellx}, ${celly}).`
             }
