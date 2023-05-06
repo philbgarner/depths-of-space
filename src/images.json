@@ -17,6 +17,8 @@
     { "name": "player-trooper-idle", "image": null, "filename": "./images/anims/Character Trooper.png" },
     { "name": "player-crusader-idle", "image": null, "filename": "./images/anims/Character Crusader.png" },
     { "name": "player-medic-idle", "image": null, "filename": "./images/anims/Character Medic.png" },
+    { "name": "player-technician-idle", "image": null, "filename": "./images/anims/Character Technician.png" },
+    { "name": "player-recon-idle", "image": null, "filename": "./images/anims/Character Recon.png" },
 
     { "name": "mars-scape", "image": null, "filename": "./images/Mars-Scape.png"},
     { "name": "mars-lookout", "image": null, "filename": "./images/mars-lookout.png"},

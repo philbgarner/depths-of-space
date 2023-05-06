@@ -43,6 +43,7 @@ async function startMove(moves) {
     function prom(unit, loc) {
         return new Promise((resolve, reject) => {
             unit.sprite.moveTo(loc.x * gridDimensions().x - 12, loc.y * gridDimensions().y - 20, 0.3).then(() => {
+                getCamera().setTarget(unit.x * gridDimensions().x - 160, unit.y * gridDimensions().y - 100, 32)
                 resolve()
             })
         })
