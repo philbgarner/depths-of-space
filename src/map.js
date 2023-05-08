@@ -166,13 +166,14 @@ function BezierBlend(t)
 
 function getCamera() {
     return { ...camera, cellX: () => parseInt(camera.x / gridDimensions().x), cellY: () => parseInt(camera.y / gridDimensions().y),
-        setTarget: (x, y, duration) => {
+        setTarget: (x, y, duration, onComplete) => {
             camera.targetStartX = camera.x
             camera.targetStartY = camera.y
             camera.targetX = x
             camera.targetY = y
             camera.targetDuration = duration
             camera.targetElapsed = 0
+            camera.onComplete = onComplete ? onComplete : () => {}
         },
         isMoving: () => {
             return camera.targetDuration > 0
@@ -344,6 +345,8 @@ function drawMap(delta) {
             camera.targetDuration = 0
             camera.x = camera.targetX
             camera.y = camera.targetY
+            camera.onComplete()
+            camera.onComplete = () => {}
         }
     }
 }

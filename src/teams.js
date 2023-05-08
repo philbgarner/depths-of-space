@@ -38,9 +38,17 @@ function currentPhase() {
     return phases[phase]
 }
 
+function setPhases(phaselist) {
+    phases = phaselist
+}
+
+function getPhases() {
+    return phases
+}
+
 function nextPhase() {
     phase++
-    phase = phase >= phases.length ? 0 : phase
+    phase = phase >= phases.length ? 1 : phase // 1 not 0 because we want to skip the positioning phase after the 1st time.
 }
 
 function nextTeam() {
@@ -48,4 +56,4 @@ function nextTeam() {
     teamIndex = teamIndex >= teams.length ? 0 : teamIndex
 }
 
-export { addTeam, currentTeam, currentPhase, nextPhase, getTeam, nextTeam, getTeams }
+export { addTeam, currentTeam, currentPhase, nextPhase, setPhases, getPhases, getTeam, nextTeam, getTeams }

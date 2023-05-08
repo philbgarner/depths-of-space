@@ -2,7 +2,7 @@ import input from "./input.js"
 import { drawImage, getContext, getImage } from "./images.js"
 import { getCamera, drawMap, getUnit, getUnits, setPlacingSprite, getPlacingSprite, gridDimensions,
     setPotentialMoves, clearPotentialMoves, getPotentialMoves, getPathMoves, clearPathMoves } from "./map.js"
-import { currentPhase, currentTeam, nextPhase, nextTeam } from "./teams.js"
+import { currentPhase, currentTeam, nextPhase, nextTeam, setPhases, getPhases } from "./teams.js"
 import { getPointer, gameMap } from "./main.js"
 
 let imu = null
@@ -43,7 +43,7 @@ async function startMove(moves) {
     function prom(unit, loc) {
         return new Promise((resolve, reject) => {
             unit.sprite.moveTo(loc.x * gridDimensions().x - 12, loc.y * gridDimensions().y - 20, 0.3).then(() => {
-                getCamera().setTarget(unit.x * gridDimensions().x - 160, unit.y * gridDimensions().y - 100, 32)
+                getCamera().setTarget(loc.x * gridDimensions().x - 160, loc.y * gridDimensions().y - 100, 100)
                 resolve()
             })
         })
@@ -62,11 +62,19 @@ function handleAction() {
             setPlacingSprite(units[0].sprite)
         } else if (getUnits().filter(f => !f.placed).length > 0) {
             nextTeam()
-            let home = currentTeam().homePosition
-            getCamera().setTarget(home.x, home.y, 1500)
+            let teamUnits = getUnits(currentTeam().name)
+            getUnits().forEach(u => u.moved = false)
+            if (teamUnits.length > 0) {
+                getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000, () => currentUnit = teamUnits[0])
+            }
             handleAction()
         } else {
             nextPhase()
+            let teamUnits = getUnits(currentTeam().name)
+            getUnits().forEach(u => u.moved = false)
+            if (teamUnits.length > 0) {
+                getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000, () => currentUnit = teamUnits[0])
+            }
         }
     }
 }
@@ -108,7 +116,37 @@ function drawUI(delta) {
         imu = new imui.ImUI(ctx.canvas)
         imu.font = font
 
-        imu.onUpdate = (ui) => {
+        let paramsGreyListImage = {
+            bgcolor: '#122020ff',
+            color: '#cacacaff',
+            bgcolorSelected: '#122020ff',
+            colorSelected: '#f1f1f1ff',
+            highlight: '#f1f1f1ff',
+            scrollbarWidth: 9,
+            scrollAreaImage: {
+                image: getImage('ui-button-scroll-area'),
+                hover: getImage('ui-button-scroll-area'),
+                pressed: getImage('ui-button-scroll-area'),
+                innerRect: { x: 3, y: 4, w: 7, h: 40 }
+            },
+            caratImage: {
+                image: getImage('ui-button-carat'),
+                hover: getImage('ui-button-carat-hover'),
+                pressed: getImage('ui-button-carat-pressed')
+            },
+            upImage: {
+                image: getImage('ui-button-scroll-up'),
+                hover: getImage('ui-button-scroll-up-hover'),
+                pressed: getImage('ui-button-scroll-up-pressed')
+            },
+            downImage: {
+                image: getImage('ui-button-scroll-down'),
+                hover: getImage('ui-button-scroll-down-hover'),
+                pressed: getImage('ui-button-scroll-down-pressed')
+            }
+        }
+
+        imu.onUpdate = async (ui) => {
             let cellx = parseInt((getPointer().x + getCamera().x) / gridDimensions().x)
             let celly = parseInt((getPointer().y + getCamera().y) / gridDimensions().y)
             let bg = ui.Element({ id: 'lblBg', text: ``, rect: { x: 0, y: 0, w: 320, h: 200 }, color: '#f1f100ff', color: '#f1f100ff', bgcolor: '#00000000'})
@@ -142,6 +180,7 @@ function drawUI(delta) {
                     delay(300).then(() => handleAction())
                 }
             } else if (currentPhase() === 'movement') {
+                console.log('movement logic')
                 if (bg.Clicked() && currentUnit === null && !isMoving) {
                     let unit = getUnit(cellx, celly)
                     if (unit && !unit.moved) {
@@ -177,40 +216,15 @@ function drawUI(delta) {
                 } else if (getUnits(currentTeam().name).filter(f => !f.moved).length === 0) {
                     currentUnit = null
                     nextTeam()
-                    let home = currentTeam().homePosition
-                    getCamera().setTarget(home.x, home.y, 1500)        
-                }
-            } else if (currentPhase() === 'active') {
-                let paramsGreyListImage = {
-                    bgcolor: '#122020ff',
-                    color: '#cacacaff',
-                    bgcolorSelected: '#122020ff',
-                    colorSelected: '#f1f1f1ff',
-                    highlight: '#f1f1f1ff',
-                    scrollbarWidth: 9,
-                    scrollAreaImage: {
-                        image: getImage('ui-button-scroll-area'),
-                        hover: getImage('ui-button-scroll-area'),
-                        pressed: getImage('ui-button-scroll-area'),
-                        innerRect: { x: 3, y: 4, w: 7, h: 40 }
-                    },
-                    caratImage: {
-                        image: getImage('ui-button-carat'),
-                        hover: getImage('ui-button-carat-hover'),
-                        pressed: getImage('ui-button-carat-pressed')
-                    },
-                    upImage: {
-                        image: getImage('ui-button-scroll-up'),
-                        hover: getImage('ui-button-scroll-up-hover'),
-                        pressed: getImage('ui-button-scroll-up-pressed')
-                    },
-                    downImage: {
-                        image: getImage('ui-button-scroll-down'),
-                        hover: getImage('ui-button-scroll-down-hover'),
-                        pressed: getImage('ui-button-scroll-down-pressed')
+                    let units = getUnits(currentTeam().name).filter(f => !f.moved)
+                    if (units.length > 0) {
+                        getCamera().setTarget(units[0].x * gridDimensions().x - 160, units[0].y * gridDimensions().y - 100, 1000, () => currentUnit = units[0])
+                    } else {
+                        let home = currentTeam().homePosition
+                        getCamera().setTarget(home.x, home.y, 1500)        
                     }
                 }
-
+            } else if (currentPhase() === 'active') {
                 tooltip = 'Active phase.'
                 if (currentUnit) {
                     let elActions = ui.Element({ id: 'actionsList', type: 'ListImage', list: ['Throw Object >', 'Reload', 'Abilities >', 'Done'], rect: {x: 8, y: 19, w: 96, h: 32 }, ...paramsGreyListImage})
@@ -247,6 +261,50 @@ function drawUI(delta) {
                 }
             } else if (currentPhase() === 'siege') {
                 tooltip = 'Siege phase.'
+
+                if (currentUnit) {
+                    let elActions = ui.Element({ id: 'actionsList', type: 'ListImage', list: ['Ranged Attack >', 'Melee Attack >', 'Done'], rect: {x: 8, y: 19, w: 96, h: 32 }, ...paramsGreyListImage})
+                    if (elActions.Clicked()) {
+                        let action = elActions.list[elActions.currentItem]
+                        if (action === 'Done') {
+                            currentUnit.moved = true
+                            currentUnit = null
+                            clearPathMoves()
+                            clearPotentialMoves()
+                            nextTeam()
+                            let teamUnits = getUnits(currentTeam().name).filter(f => !f.moved)
+                            if (teamUnits.length > 0) {
+                                getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000)
+                                currentUnit = teamUnits[0]
+                            } else if (getUnits().filter(f => !f.moved).length === 0) {
+                                currentUnit = null
+                                nextPhase()
+                                getUnits().forEach(u => u.moved = false)
+                                let teamUnits = getUnits(currentTeam().name)
+                                if (teamUnits.length > 0) {
+                                    currentUnit = teamUnits[0]
+                                    getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000)
+                                }
+                            }
+                        }
+                    }
+                } else if (bg.Clicked() && currentUnit === null) {
+                    let unit = getUnit(cellx, celly)
+                    if (unit && !unit.moved) {
+                        currentUnit = unit
+                        getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
+                    }
+                }
+            } else if (currentPhase() === 'upkeep') {
+                tooltip = 'Applying damage'
+                getUnits().forEach(f => f.moved = false)
+                currentUnit = null
+                nextPhase()
+                let teamUnits = getUnits(currentTeam().name)
+                getUnits().forEach(u => u.moved = false)
+                if (teamUnits.length > 0) {
+                    getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000, () => currentUnit = teamUnits[0])
+                }    
             }
 
             if (currentUnit) {

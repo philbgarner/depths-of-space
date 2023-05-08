@@ -20,25 +20,29 @@ function getImages() {
 }
 
 function drawImage(name, x, y, srcRect, flipped) {
+    drawImageCtx(getContext(), name, x, y, srcRect, flipped)
+}
+
+function drawImageCtx(context, name, x, y, srcRect, flipped) {
     let img = images.filter(f => f.name === name)
     if (img.length > 0) {
         if (srcRect) {
             if (flipped) {
-                ctx.save()
-                ctx.scale(-1, 1)
-                ctx.drawImage(img[0].image, srcRect.x, srcRect.y, srcRect.w, srcRect.h, -x - srcRect.w, y, srcRect.w, srcRect.h)    
-                ctx.restore()
+                context.save()
+                context.scale(-1, 1)
+                context.drawImage(img[0].image, srcRect.x, srcRect.y, srcRect.w, srcRect.h, -x - srcRect.w, y, srcRect.w, srcRect.h)    
+                context.restore()
             } else {
-                ctx.drawImage(img[0].image, srcRect.x, srcRect.y, srcRect.w, srcRect.h, x, y, srcRect.w, srcRect.h)    
+                context.drawImage(img[0].image, srcRect.x, srcRect.y, srcRect.w, srcRect.h, x, y, srcRect.w, srcRect.h)    
             }
         } else {
             if (flipped) {
-                ctx.save()
-                ctx.scale(-1, 1)
-                ctx.drawImage(img[0].image, x - srcRect.w, y, srcRect.w, srcRect.h)    
-                ctx.restore()
+                context.save()
+                context.scale(-1, 1)
+                context.drawImage(img[0].image, x - srcRect.w, y, srcRect.w, srcRect.h)    
+                context.restore()
             } else {
-                ctx.drawImage(img[0].image, x, y)
+                context.drawImage(img[0].image, x, y)
             }
         }
     }
@@ -76,4 +80,4 @@ function loadAllImages() {
     return Promise.allSettled(promises)
 }
 
-export { loadAllImages, loadImage, drawImage, getImage, getImages, setContext, getContext }
+export { loadAllImages, loadImage, drawImage, getImage, getImages, setContext, drawImageCtx, getContext }
