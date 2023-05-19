@@ -146,6 +146,8 @@ function drawUI(delta) {
             }
         }
 
+        let siegeSelect = ''
+
         imu.onUpdate = async (ui) => {
             let cellx = parseInt((getPointer().x + getCamera().x) / gridDimensions().x)
             let celly = parseInt((getPointer().y + getCamera().y) / gridDimensions().y)
@@ -261,9 +263,23 @@ function drawUI(delta) {
                 }
             } else if (currentPhase() === 'siege') {
                 tooltip = 'Siege phase.'
+                let lst = ['Ranged Attack >', 'Melee Attack >', 'Done']
+                if (siegeSelect === 'melee') {
+                    if (currentUnit) {
+                        console.log(currentUnit)
+                        lst = currentUnit.character.equipment.filter(f => f.range === 0).map(m => m.name)
+                        lst.push('< Back')
+                    }
+                } else if (siegeSelect === 'ranged') {
+                    if (currentUnit) {
+                        console.log(currentUnit)
+                        lst = currentUnit.character.equipment.filter(f => f.range === 0).map(m => m.name)
+                        lst.push('< Back')
+                    }
+                }
 
                 if (currentUnit) {
-                    let elActions = ui.Element({ id: 'actionsList', type: 'ListImage', list: ['Ranged Attack >', 'Melee Attack >', 'Done'], rect: {x: 8, y: 19, w: 96, h: 32 }, ...paramsGreyListImage})
+                    let elActions = ui.Element({ id: 'actionsList', type: 'ListImage', list: lst, rect: {x: 8, y: 19, w: 96, h: 32 }, ...paramsGreyListImage})
                     if (elActions.Clicked()) {
                         let action = elActions.list[elActions.currentItem]
                         if (action === 'Done') {
@@ -286,6 +302,10 @@ function drawUI(delta) {
                                     getCamera().setTarget(teamUnits[0].x * gridDimensions().x - 160, teamUnits[0].y * gridDimensions().y - 100, 1000)
                                 }
                             }
+                        } else if (action.toLowerCase().includes('melee')) {
+                            siegeSelect = 'melee'
+                        } else if (action.toLowerCase().includes('ranged')) {
+                            siegeSelect = 'ranged'
                         }
                     }
                 } else if (bg.Clicked() && currentUnit === null) {
