@@ -103,6 +103,9 @@ function onUpdate(ui) {
             if (selIndex > -1) {
                 ui.Element({ id: 'charEquip', text: 'Equipment:', rect: { x: 8, y: 8, w: 64, h: 9 }}, eqabMenu)
                 var listEquip = ui.Element({ id: 'charEquipList', type: 'ListImage', list: equip.map(m => m.name), rect: {x: 8, y: 19, w: 128, h: 80 }, ...paramsGreyListImageMulti}, eqabMenu)
+                let selList = listEquip.selectedList.map(m => equip[listEquip.selectedList])
+                character.SetEquipment([...selList])
+                console.log('equipment =', character.equipment)
                 let eq = equip[listEquip.hoverItem]
                 if (eq) {
                     let classDescription = []
@@ -133,8 +136,9 @@ function onUpdate(ui) {
             if (!buttonsMenu.anim) {
                 let btnNext = ui.Element({ id: 'btnNext', text: 'Next', rect: { x: 72, y: 8, w: 50, h: 16 }, ...paramsTealButton }, buttonsMenu)
                 if (btnNext.Clicked()) {
-                    equip = []
                     transitionOut(frameMenu, eqabMenu, buttonsMenu, () => {
+                        ChangeMenu('end')
+                        equip = []
                         Start(squad, buildMap())
                     })
                 }

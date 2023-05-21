@@ -80,6 +80,14 @@ class Character {
         return this.data.Cost + this.EffectModifier('cost')
     }
 
+    SetEquipment(equipment) {
+        this.equipment = equipment
+    }
+
+    GetEquipment() {
+        return this.equipment
+    }
+
     EquipmentAndAbilities(eqab) {
         if (eqab !== undefined) {
             this.data.equipAbilities = eqab

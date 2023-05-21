@@ -99,8 +99,11 @@ function ChangeMenu(id) {
 
     if (id === 'GameSetup') {
         imu.onUpdate = onGameSetupUpdate
-    } if (id === 'SetupEquipment') {
+    } else if (id === 'SetupEquipment') {
         imu.onUpdate = onEquipSetupUpdate
+    } else {
+        console.log('id =', id)
+        imu.onUpdate = () => {}
     }
 }
 

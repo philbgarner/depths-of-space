@@ -266,13 +266,11 @@ function drawUI(delta) {
                 let lst = ['Ranged Attack >', 'Melee Attack >', 'Done']
                 if (siegeSelect === 'melee') {
                     if (currentUnit) {
-                        console.log(currentUnit)
                         lst = currentUnit.character.equipment.filter(f => f.range === 0).map(m => m.name)
                         lst.push('< Back')
                     }
                 } else if (siegeSelect === 'ranged') {
                     if (currentUnit) {
-                        console.log(currentUnit)
                         lst = currentUnit.character.equipment.filter(f => f.range === 0).map(m => m.name)
                         lst.push('< Back')
                     }

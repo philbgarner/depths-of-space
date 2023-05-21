@@ -84,7 +84,6 @@ async function StartMainMenu() {
 }
 
 async function Start(squad, map) {
-
     gameMap = map
 
     input.unlisten()
@@ -97,6 +96,7 @@ async function Start(squad, map) {
     let bSquad = JSON.parse(JSON.stringify(squad))
 
     for (let s in squad) {
+        console.log(squad[s])
         addUnit('Team Alpha', squad[s], false)
         bSquad[s] = new Character(bSquad[s].name)
         addUnit('Team Bravo', bSquad[s], true)
