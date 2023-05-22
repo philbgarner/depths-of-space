@@ -95,7 +95,6 @@ function onUpdate(ui) {
         if (!eqabMenu.anim) {
             let listEquip = null
             let el = ui.Element({ id: 'charList', type: 'ListImage', list: squad.map(m => m.name), rect: {x: 8, y: 9, w: 55, h: 90 }, ...paramsGreyListImage}, frameMenu)
-            //if (el.currentItem !== null && el.currentItem !== selIndex) {
             if (el.Clicked()) {
                 selCharacter(el.currentItem)
                 ui.RemoveElement('charEquipList')
@@ -103,13 +102,11 @@ function onUpdate(ui) {
                 listEquip.selectedList = character.equipment.map(m => equip.map(eq => eq.name).includes(m.name) ? equip.map(eq => eq.name).findIndex(f => f === m.name) : undefined).filter(f => f !== undefined)
                 console.log('charEquipList remove', character.equipment, equip, listEquip.selectedList)
             }
-            //}
             if (selIndex > -1) {
                 ui.Element({ id: 'charEquip', text: 'Equipment:', rect: { x: 8, y: 8, w: 64, h: 9 }}, eqabMenu)
                 listEquip = ui.Element({ id: 'charEquipList', type: 'ListImage', list: equip.map(m => m.name), rect: {x: 8, y: 19, w: 128, h: 80 }, ...paramsGreyListImageMulti}, eqabMenu)
-                let selList = listEquip.selectedList.map(m => equip[listEquip.selectedList])
+                let selList = listEquip.selectedList.map(m => equip[m])
                 character.SetEquipment([...selList])
-//                console.log('character.equipment', character.equipment, selList)
                 let eq = equip[listEquip.hoverItem]
                 if (eq) {
                     let classDescription = []
