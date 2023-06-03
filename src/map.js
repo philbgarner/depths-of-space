@@ -4,6 +4,11 @@ import { currentPhase, getTeam, getTeams } from "./teams.js"
 import { getPointer } from "./main.js"
 import { getCurrentUnit } from "./mainScene.js"
 
+function manhattanDistance(startPoint, toX, toY) {
+    return Math.abs (startPoint.x - toX) + Math.abs (startPoint.y -
+        toY)
+}
+
 var map = null
 
 var width = 36
@@ -45,6 +50,16 @@ function setAttackTargetUnits(units) {
     attackTargetUnits = units
 }
 
+function clearAttackTargets() {
+    attackTargetUnits = []
+}
+
+function findAttackTargets(unit, weapon) {
+    // TODO: After getting units within radius of selected weapon,
+    // do a LOS check to see if it's under cover or partial cover.
+    return units.filter(f => manhattanDistance({ x: unit.x, y: unit.y }, f.x, f.y) <= weapon.range && f.team.name !== unit.team.name)
+}
+
 function getHealTargetUnits() {
     return healTargetUnits
 }
@@ -83,11 +98,6 @@ function setPotentialMoves(unit, destX, destY) {
         }
     }
     handleMove(unit.x, unit.y, movementTiles, unit.character.Speed())
-
-    function manhattanDistance(q, toX, toY) {
-        return Math.abs (q.x - toX) + Math.abs (q.y -
-            toY)
-    }
 
     function getSuccessor(q, dx, dy, toX, toY) {
         let s = { x: q.x + dx, y: q.y + dy, parent: q, g: q.g + manhattanDistance(q, q.x + dx, q.y + dy), h: manhattanDistance({ x: q.x + dx, y: q.y + dy }, toX, toY)}
@@ -409,4 +419,4 @@ function buildMap() {
 }
 
 export { buildMap, drawMap, gridDimensions, addUnit, setPlacingSprite, getPlacingSprite, getUnits, getUnit, getCamera, setPotentialMoves, clearPotentialMoves,
-    getPathMoves, clearPathMoves, getPotentialMoves, getHealTargetUnits, setHealTargetUnits, getAttackTargetUnits, setAttackTargetUnits }
+    getPathMoves, clearPathMoves, getPotentialMoves, getHealTargetUnits, setHealTargetUnits, getAttackTargetUnits, setAttackTargetUnits, findAttackTargets, clearAttackTargets }
