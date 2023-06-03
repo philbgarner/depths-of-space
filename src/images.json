@@ -7,6 +7,7 @@
     { "name": "grid-movement-down", "image": null, "filename": "./images/GridMoveNodeDown.png" },
     { "name": "grid-movement-left", "image": null, "filename": "./images/GridMoveNodeLeft.png" },
     { "name": "unit-selected", "image": null, "filename": "./images/UnitSelected.png" },
+    { "name": "unit-targeted", "image": null, "filename": "./images/UnitTargeted.png" },
     { "name": "grid-green", "image": null, "filename": "./images/GridGreen.png" },
     { "name": "grid-yellow", "image": null, "filename": "./images/GridYellow.png" },
     { "name": "player-walk", "image": null, "filename": "./images/anims/PlayerWalk 48x48.png" },

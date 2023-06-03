@@ -20,6 +20,8 @@ var placingSprite = null
 var movementTiles = []
 var movementPath = []
 
+var attackTargetUnits = []
+var healTargetUnits = []
 var units = []
 
 var camera = {
@@ -33,6 +35,22 @@ var camera = {
     targetStartY: 8.5 * gridDimensions().y,
     targetDuration: 0,
     targetElapsed: 0
+}
+
+function getAttackTargetUnits() {
+    return attackTargetUnits
+}
+
+function setAttackTargetUnits(units) {
+    attackTargetUnits = units
+}
+
+function getHealTargetUnits() {
+    return healTargetUnits
+}
+
+function setHealTargetUnits(units) {
+    healTargetUnits = units
 }
 
 function getPathMoves() {
@@ -390,4 +408,5 @@ function buildMap() {
     return map
 }
 
-export { buildMap, drawMap, gridDimensions, addUnit, setPlacingSprite, getPlacingSprite, getUnits, getUnit, getCamera, setPotentialMoves, clearPotentialMoves, getPathMoves, clearPathMoves, getPotentialMoves }
+export { buildMap, drawMap, gridDimensions, addUnit, setPlacingSprite, getPlacingSprite, getUnits, getUnit, getCamera, setPotentialMoves, clearPotentialMoves,
+    getPathMoves, clearPathMoves, getPotentialMoves, getHealTargetUnits, setHealTargetUnits, getAttackTargetUnits, setAttackTargetUnits }
