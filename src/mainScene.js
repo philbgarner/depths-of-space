@@ -271,7 +271,7 @@ function drawUI(delta) {
                     }
                 } else if (siegeSelect === 'ranged') {
                     if (currentUnit) {
-                        lst = currentUnit.character.equipment.filter(f => f.range === 0).map(m => m.name)
+                        lst = currentUnit.character.equipment.filter(f => f.range > 0).map(m => m.name)
                         lst.push('< Back')
                     }
                 }
@@ -304,6 +304,11 @@ function drawUI(delta) {
                             siegeSelect = 'melee'
                         } else if (action.toLowerCase().includes('ranged')) {
                             siegeSelect = 'ranged'
+                        } else if (action.toLowerCase().includes('back')) {
+                            siegeSelect = ''
+                        } else if (siegeSelect === 'melee' || siegeSelect === 'ranged') {
+                            // Must have selected an item.
+                            console.log('item', action)
                         }
                     }
                 } else if (bg.Clicked() && currentUnit === null) {
