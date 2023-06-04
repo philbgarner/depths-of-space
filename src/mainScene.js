@@ -1,7 +1,7 @@
 import input from "./input.js"
 import { drawImage, getContext, getImage } from "./images.js"
 import { getCamera, drawMap, getUnit, getUnits, setPlacingSprite, getPlacingSprite, gridDimensions,
-    setPotentialMoves, clearPotentialMoves, getPotentialMoves, getPathMoves, clearPathMoves, findAttackTargets, setAttackTargetUnits } from "./map.js"
+    setPotentialMoves, clearPotentialMoves, getPotentialMoves, getPathMoves, clearPathMoves, findAttackTargets, setAttackTargetUnits, clearAttackTargets } from "./map.js"
 import { currentPhase, currentTeam, nextPhase, nextTeam, setPhases, getPhases } from "./teams.js"
 import { getPointer, gameMap } from "./main.js"
 
@@ -305,12 +305,13 @@ function drawUI(delta) {
                         } else if (action.toLowerCase().includes('ranged')) {
                             siegeSelect = 'ranged'
                         } else if (action.toLowerCase().includes('back')) {
+                            clearAttackTargets()
+                            getCamera().setTarget(currentUnit.x * gridDimensions().x - 160, currentUnit.y * gridDimensions().y - 100, 1000)
                             siegeSelect = ''
                         } else if (siegeSelect === 'melee' || siegeSelect === 'ranged') {
                             // Must have selected an item.
                             console.log(currentUnit)
                             let item = currentUnit.character.equipment.filter(f => f.name === action)
-                            console.log('item', action)
                             if (item.length > 0) {
                                 let targets = findAttackTargets(currentUnit, item[0])
                                 if (targets.length > 0) {

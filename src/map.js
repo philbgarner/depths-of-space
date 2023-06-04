@@ -327,6 +327,10 @@ function drawMap(delta) {
         bfontjs.DrawText(getContext(), placingSprite.x + 12, placingSprite.y + 43, placingSprite.actor.name, '#f1f1f1ff', font)
     }
 
+    attackTargetUnits.forEach(u => {
+        drawImage('unit-targeted', u.x * gridDimensions().x, u.y * gridDimensions().y)
+    })
+
     getTeams().forEach(team => {
         let units = getUnits(team.name).filter(f => f.placed)
         for (let u in units) {
